@@ -1,0 +1,9 @@
+security:
+  resource: "@CustomerHuntSiteBundle/Controller/SecurityController.php"
+  prefix: /
+  type: annotation
+
+general:
+  resource: "@CustomerHuntSiteBundle/Controller/GeneralController.php"
+  prefix: /
+  type: annotation

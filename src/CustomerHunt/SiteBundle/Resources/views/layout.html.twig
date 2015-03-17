@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>{% block title %}Page{% endblock %}</title>
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="{% block keywords %}{% endblock %}">
+    <meta name="author" content="const-se.ru">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block stylesheets %}
+        {% stylesheets 'bundles/customerhuntsite/css/normalize.css'
+            'bundles/customerhuntsite/css/bootstrap.min.css'
+            'bundles/customerhuntsite/css/bootstrap-theme.min.css'
+            'bundles/customerhuntsite/css/layout.css'
+            filter = 'cssrewrite' %}
+            <link rel="stylesheet" href="{{ asset_url }}">
+        {% endstylesheets %}
+    {% endblock %}
+    {% block javascripts %}
+        {% javascripts '@CustomerHuntSiteBundle/Resources/public/js/jquery-1.11.2.min.js'
+            '@CustomerHuntSiteBundle/Resources/public/js/bootstrap.min.js' %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}
+    {% endblock %}
+    {% block head_additions %}{% endblock %}
+</head>
+<body>
+    <div class="container-fluid">
+        {% block content %}{% endblock %}
+    </div>
+    {% block body_additions %}{% endblock %}
+</body>
+</html>

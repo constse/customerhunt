@@ -2,4 +2,7 @@ parameters:
 #  empty
 
 services:
-#  empty
+  customer_hunt.controller_listener:
+    class: CustomerHunt\SystemBundle\EventListener\ControllerListener
+    tags:
+      - { name: kernel.event_listener, event: kernel.controller, method: onKernelController }
