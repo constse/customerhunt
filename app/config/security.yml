@@ -1,10 +1,37 @@
 security:
+  encoders:
+    CustomerHunt\SystemBundle\Entity\User: bcrypt
+  role_hierarchy:
+    ROLE_ADMIN: [ROLE_USER]
   providers:
-    in_memory:
-      memory: ~
+    user_provider:
+      entity: { class: CustomerHunt\SystemBundle\Entity\User, property: username }
   firewalls:
     dev:
       pattern: ^/(_(profiler|wdt|error)|css|images|js)/
       security: false
-    default:
+    site_login:
+      pattern: ^/login
       anonymous: ~
+    site:
+      pattern: ^/
+      provider: user_provider
+      form_login:
+        login_path: site_security_login
+        check_path: site_security_login_check
+        username_parameter: login[username]
+        password_parameter: login[password]
+        target_path_parameter: login[targetpath]
+        default_target_path: site_general_index
+        remember_me: true
+      remember_me:
+        key: "%secret%"
+        lifetime: 86400
+        path: /
+        remember_me_parameter: login[rememberme]
+      logout:
+        path: site_security_logout
+        target: site_security_login
+  access_control:
+    - { path: ^/login, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+    - { path: ^/, roles: [ROLE_ADMIN] }
