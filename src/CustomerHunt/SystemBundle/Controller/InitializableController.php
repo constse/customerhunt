@@ -2,6 +2,7 @@
 
 namespace CustomerHunt\SystemBundle\Controller;
 
+use CustomerHunt\SystemBundle\Entity\User;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -24,7 +25,7 @@ abstract class InitializableController extends Controller
     protected $request;
     /** @var Session */
     protected $session;
-    /** @var */
+    /** @var User */
     protected $user;
     /** @var array */
     protected $view;

@@ -28,7 +28,7 @@ class Fixtures implements FixtureInterface, ContainerAwareInterface
         $user = new User();
         /** @var UserPasswordEncoder $encoder */
         $encoder = $this->container->get('security.password_encoder');
-        $user->setUsername('admin')->setPassword($encoder->encodePassword($user, 'adminpassword'));
+        $user->setUsername('admin')->setPassword($encoder->encodePassword($user, 'admin'));
 
         foreach ($roles as $role) $user->getRolesCollection()->add($role);
 

@@ -3,6 +3,7 @@
 namespace CustomerHunt\SiteBundle\Controller;
 
 use CustomerHunt\SiteBundle\Form\Type\LoginFormType;
+use CustomerHunt\SiteBundle\Form\Type\ProfileFormType;
 use CustomerHunt\SystemBundle\Controller\InitializableController;
 use CustomerHunt\SystemBundle\Entity\Role;
 use CustomerHunt\SystemBundle\Entity\User;
@@ -11,6 +12,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 use Symfony\Component\Security\Core\Security;
 
 class SecurityController extends InitializableController
@@ -61,5 +63,37 @@ class SecurityController extends InitializableController
     public function logoutAction()
     {
         throw $this->createNotFoundException();
+    }
+
+    /**
+     * @return RedirectResponse|Response
+     * @Config\Route("/profile", name = "site_security_profile")
+     */
+    public function profileAction()
+    {
+        $form = $this->createForm(new ProfileFormType(), $this->user);
+        $form->handleRequest($this->request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (!is_null($form->get('password')->getData())) {
+                /** @var UserPasswordEncoder $encoder */
+                $encoder = $this->get('security.password_encoder');
+                $this->user->setSalt(User::generateSalt())
+                    ->setPassword($encoder->encodePassword($this->user, $this->user->getPassword()));
+                $this->manager->persist($this->user);
+                $this->manager->flush();
+            }
+
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:security.html.twig',
+                array('notice' => 'user_changed')
+            );
+
+            return $this->redirectToRoute('site_general_index');
+        }
+
+        $this->forms['profile'] = $form->createView();
+
+        return $this->render('CustomerHuntSiteBundle:security:profile.html.twig');
     }
 }

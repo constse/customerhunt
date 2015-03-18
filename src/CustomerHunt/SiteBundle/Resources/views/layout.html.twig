@@ -38,7 +38,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li{% if app.request.get('_route') == 'site_security_profile' %} class="active"{% endif %}>
-                            <a href="#">
+                            <a href="{{ url('site_security_profile') }}">
                                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ app.user.username|e }}
                             </a>
                         </li>
