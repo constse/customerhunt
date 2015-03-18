@@ -1,0 +1,29 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}Вход в Customer Hunt{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% stylesheets 'bundles/customerhuntsite/css/login.css' filter = 'cssrewrite' %}
+        <link rel="stylesheet" href="{{ asset_url }}">
+    {% endstylesheets %}
+{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block content %}
+    {% set form = forms.login %}
+    {% set error = form.vars.errors|length > 0 %}
+    {% set class = 'form-login' ~ (error ? ' has-error' : '') %}
+    {{ form_start(form, {'action': url('site_security_login_check'), 'attr': {'class': class}}) }}
+        <h1>Customer Hunt</h1>
+        {{ form_label(form.username, null, {'label_attr': {'class': 'sr-only'}}) }}
+        {{ form_widget(form.username, {'value': forms.last_username|e, 'attr': {'class': 'form-control', 'placeholder': form.username.vars.label, 'autofocus': true}}) }}
+        {{ form_label(form.password, null, {'label_attr': {'class': 'sr-only'}}) }}
+        {{ form_widget(form.password, {'attr': {'class': 'form-control', 'placeholder': form.password.vars.label}}) }}
+        {% if error %}{% for error in form.vars.errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}{% endif %}
+        <button type="submit" class="btn btn-lg btn-primary btn-block">
+            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Войти
+        </button>
+    {{ form_end(form) }}
+{% endblock %}

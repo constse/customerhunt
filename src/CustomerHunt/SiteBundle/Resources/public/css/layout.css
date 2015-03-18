@@ -1,0 +1,27 @@
+body {
+    background: #eee;
+}
+
+.notices {
+    max-width: 600px;
+    min-width: 400px;
+    position: fixed;
+    right: 20px;
+    top: 75px;
+    z-index: 10000;
+}
+
+.page-header {
+    margin-top: 0;
+}
+
+.page {
+    background: #fff;
+    border-radius: 6px;
+    margin: 70px 0 50px;
+    padding: 30px 15px;
+}
+
+.form {
+    width: 600px;
+}

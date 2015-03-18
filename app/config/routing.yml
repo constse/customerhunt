@@ -1,3 +1,8 @@
+projects:
+  resource: "@CustomerHuntSiteBundle/Controller/ProjectsController.php"
+  prefix: /projects
+  type: annotation
+
 security:
   resource: "@CustomerHuntSiteBundle/Controller/SecurityController.php"
   prefix: /

@@ -21,6 +21,12 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     protected $password;
 
     /**
+     * @var ArrayCollection|Project[]
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", mappedBy = "owner")
+     */
+    protected $projects;
+
+    /**
      * @var ArrayCollection|Role[]
      * @ORM\ManyToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Role", inversedBy = "users")
      * @ORM\JoinTable(name = "user_roles",
@@ -38,7 +44,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
 
     /**
      * @var string
-     * @ORM\Column(name = "username", type = "string, unique = true)
+     * @ORM\Column(name = "username", type = "string", unique = true)
      */
     protected $username;
 
@@ -46,6 +52,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     {
         parent::__construct();
 
+        $this->projects = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->salt = self::generateSalt();
     }
@@ -69,6 +76,14 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     public function getPassword()
     {
         return $this->password;
+    }
+
+    /**
+     * @return ArrayCollection|Project[]
+     */
+    public function getProjects()
+    {
+        return $this->projects;
     }
 
     /**
@@ -105,7 +120,12 @@ class User extends AbstractEntity implements UserInterface, \Serializable
 
     public function serialize()
     {
-        return serialize(array('username' => $this->username));
+        return serialize(array(
+            'id' => $this->id,
+            'username' => $this->username,
+            'password' => $this->password,
+            'salt' => $this->salt
+        ));
     }
 
     /**
@@ -144,7 +164,10 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     public function unserialize($serialized)
     {
         $unserialized = unserialize($serialized);
+        $this->id = $unserialized['id'];
         $this->username = $unserialized['username'];
+        $this->password = $unserialized['password'];
+        $this->salt = $unserialized['salt'];
 
         return $this;
     }

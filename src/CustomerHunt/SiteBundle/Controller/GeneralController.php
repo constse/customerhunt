@@ -4,15 +4,16 @@ namespace CustomerHunt\SiteBundle\Controller;
 
 use CustomerHunt\SystemBundle\Controller\InitializableController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
+use Symfony\Component\HttpFoundation\Response;
 
 class GeneralController extends InitializableController
 {
     /**
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @Config\Route("/", name = "site_general_index")
      */
     public function indexAction()
     {
-        return $this->render('CustomerHuntSiteBundle:general:index.html.twig');
+        return $this->forward('CustomerHuntSiteBundle:Projects:index');
     }
 }

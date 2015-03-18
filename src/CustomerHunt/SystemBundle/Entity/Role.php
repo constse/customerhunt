@@ -14,6 +14,9 @@ use Symfony\Component\Security\Core\Role\RoleInterface;
  */
 class Role extends AbstractEntity implements RoleInterface
 {
+    const ADMIN = 'ROLE_ADMIN';
+    const USER = 'ROLE_USER';
+
     /**
      * @var string
      * @ORM\Column(name = "role", type = "string", unique = true)

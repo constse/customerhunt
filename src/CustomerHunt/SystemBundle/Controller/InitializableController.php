@@ -8,9 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 
 abstract class InitializableController extends Controller
 {
+    /** @var AuthorizationChecker */
+    protected $authChecker;
     /** @var array */
     protected $forms;
     /** @var EntityManager */
@@ -25,6 +28,19 @@ abstract class InitializableController extends Controller
     protected $user;
     /** @var array */
     protected $view;
+
+    /**
+     * @param string $level
+     * @param string $view
+     * @param array $parameters
+     * @return $this
+     */
+    public function addNotice($level, $view, array $parameters = array())
+    {
+        $this->addFlash('notices.' . $level, $this->renderView($view, $parameters));
+
+        return $this;
+    }
 
     /**
      * @param $entity
@@ -42,6 +58,7 @@ abstract class InitializableController extends Controller
     {
         $this->request = $request;
 
+        $this->authChecker = $this->get('security.authorization_checker');
         $this->forms = array();
         $this->manager = $this->getDoctrine()->getManager();
         $this->repositories = array();
@@ -60,7 +77,7 @@ abstract class InitializableController extends Controller
     {
         $parameters = array_merge($parameters, array(
             'forms' => $this->forms,
-            'views' => $this->view
+            'view' => $this->view
         ));
 
         return parent::render($view, $parameters, $response);

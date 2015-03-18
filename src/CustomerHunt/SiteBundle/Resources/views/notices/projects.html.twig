@@ -1,0 +1,20 @@
+{% if notice == 'project_added' %}
+    <h4>Проект добавлен</h4>
+    <p>Новый проект &laquo;{{ caption|e }}&raquo; был успешно добавлен.</p>
+{% endif %}
+{% if notice == 'project_changed' %}
+    <h4>Проект изменен</h4>
+    <p>Проект &laquo;{{ caption|e }}&raquo; был успешно изменен.</p>
+{% endif %}
+{% if notice == 'caption_already_exist' %}
+    <h4>Проект уже существует</h4>
+    <p>
+        Проект с наименованием &laquo;{{ caption|e }}&raquo; уже существует.
+        Вы можете изменить наименование текущего проекта или проигнорировать данное сообщение.
+    </p>
+    <p><a href="{{ url('site_projects_edit', {'project': project}) }}" class="btn btn-warning">Изменить наименование</a></p>
+{% endif %}
+{% if notice == 'project_removed' %}
+    <h4>Проект удален</h4>
+    <p>Проект &laquo;{{ caption|e }}&raquo; был успешно удален.</p>
+{% endif %}
