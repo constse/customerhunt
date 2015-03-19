@@ -70,7 +70,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
         $symbols = '0123456789abcdef';
         $salt = '';
 
-        foreach (range(1, 32) as $i) $salt .= mt_rand(0, 15);
+        foreach (range(1, 32) as $i) $salt .= $symbols[mt_rand(0, 15)];
 
         return $salt;
 //        return openssl_random_pseudo_bytes(32);
