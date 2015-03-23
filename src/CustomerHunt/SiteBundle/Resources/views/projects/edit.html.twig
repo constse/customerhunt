@@ -16,7 +16,11 @@
 {% block content %}
     {% set project = view.project %}
     <div class="page">
-        <div class="page-header"><h1>Проект: {{ project.caption|e }}</h1></div>
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; {{ project.caption|e }}
+            </h1>
+        </div>
         {% set form = forms.project %}
         {{ form_start(form, {'attr': {'class': 'form'}}) }}
         {% set errors = form.caption.vars.errors %}
