@@ -4,7 +4,7 @@
 
 {% block navigation %}
     <li class="active">
-        <a href="{{ url('site_projects_index') }}">
+        <a href="{{ url('site_projects') }}">
             <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; Проекты
         </a>
     </li>
@@ -15,9 +15,11 @@
         <div class="page-header"><h1>Мои проекты</h1></div>
         <table class="table table-striped">
             <thead>
-                <th>Проект</th>
-                <th>Страниц</th>
-                <th>Описание</th>
+                <tr>
+                    <th>Проект</th>
+                    <th>Страниц</th>
+                    <th>Описание</th>
+                </tr>
             </thead>
             <tbody>
                 {% for project in view.projects %}
@@ -28,7 +30,7 @@
                             </a>
                         </td>
                         <td>{{ project.pages|length }}</td>
-                        <td class="text-muted">{{ project.description|e }}</td>
+                        <td class="text-muted">{% if project.description is not empty %}{{ project.description|e }}{% else %}&mdash;{% endif %}</td>
                     </tr>
                 {% else %}
                     <tr>

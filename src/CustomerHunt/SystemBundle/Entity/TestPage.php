@@ -2,17 +2,22 @@
 
 namespace CustomerHunt\SystemBundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class Page
+ * Class TestPage
  * @package CustomerHunt\SystemBundle\Entity
  * @ORM\Entity
- * @ORM\Table(name = "pages")
+ * @ORM\Table(name = "testpages")
  */
-class Page extends AbstractEntity
+class TestPage extends AbstractEntity
 {
+    /**
+     * @var string
+     * @ORM\Column(name = "alias", type = "string")
+     */
+    protected $alias;
+
     /**
      * @var string
      * @ORM\Column(name = "caption", type = "string")
@@ -27,22 +32,23 @@ class Page extends AbstractEntity
 
     /**
      * @var Project
-     * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", inversedBy = "pages")
+     * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", inversedBy = "testPages")
      * @ORM\JoinColumn(name = "projectid", referencedColumnName = "id")
      */
     protected $project;
 
     /**
-     * @var ArrayCollection|ReplacementDictionary[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\ReplacementDictionary", mappedBy = "page")
+     * @var string
+     * @ORM\Column(name = "source", type = "text")
      */
-    protected $replacementDictionaries;
+    protected $source;
 
-    public function __construct()
+    /**
+     * @return string
+     */
+    public function getAlias()
     {
-        parent::__construct();
-
-        $this->replacementDictionaries = new ArrayCollection();
+        return $this->alias;
     }
 
     /**
@@ -67,6 +73,25 @@ class Page extends AbstractEntity
     public function getProject()
     {
         return $this->project;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSource()
+    {
+        return $this->source;
+    }
+
+    /**
+     * @param string $alias
+     * @return $this
+     */
+    public function setAlias($alias)
+    {
+        $this->alias = $alias;
+
+        return $this;
     }
 
     /**
@@ -101,4 +126,15 @@ class Page extends AbstractEntity
 
         return $this;
     }
-} 
+
+    /**
+     * @param string $source
+     * @return $this
+     */
+    public function setSource($source)
+    {
+        $this->source = $source;
+
+        return $this;
+    }
+}

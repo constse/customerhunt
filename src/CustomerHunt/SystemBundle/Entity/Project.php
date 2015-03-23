@@ -38,11 +38,18 @@ class Project extends AbstractEntity
      */
     protected $pages;
 
+    /**
+     * @var ArrayCollection|TestPage[]
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\TestPage", mappedBy = "project")
+     */
+    protected $testPages;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->pages = new ArrayCollection();
+        $this->testPages = new ArrayCollection();
     }
 
     /**
@@ -75,6 +82,14 @@ class Project extends AbstractEntity
     public function getPages()
     {
         return $this->pages;
+    }
+
+    /**
+     * @return ArrayCollection|TestPage[]
+     */
+    public function getTestPages()
+    {
+        return $this->testPages;
     }
 
     /**

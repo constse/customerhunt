@@ -1,3 +1,8 @@
+test_pages:
+  resource: "@CustomerHuntSiteBundle/Controller/TestPagesController.php"
+  prefix: /projects
+  type: annotation
+
 projects:
   resource: "@CustomerHuntSiteBundle/Controller/ProjectsController.php"
   prefix: /projects

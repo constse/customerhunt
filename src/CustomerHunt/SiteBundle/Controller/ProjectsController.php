@@ -9,7 +9,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProjectsController extends InitializableController
 {
@@ -21,6 +20,8 @@ class ProjectsController extends InitializableController
      */
     public function editAction(Project $project)
     {
+        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
+
         $form = $this->createForm(new ProjectFormType(), $project);
         $form->handleRequest($this->request);
 
@@ -68,8 +69,7 @@ class ProjectsController extends InitializableController
      */
     public function removeAction(Project $project)
     {
-        if ($project->getOwner() !== $this->user)
-            throw $this->createNotFoundException();
+        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
 
         $caption = $project->getCaption();
         $this->manager->remove($project);
@@ -119,7 +119,7 @@ class ProjectsController extends InitializableController
                     )
                 );
 
-            return $this->redirectToRoute('site_projects_index');
+            return $this->redirectToRoute('site_projects');
         }
 
         $this->forms['project'] = $form->createView();
@@ -136,6 +136,8 @@ class ProjectsController extends InitializableController
      */
     public function projectAction(Project $project)
     {
+        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
+
         $this->view['project'] = $project;
 
         return $this->render('CustomerHuntSiteBundle:projects:project.html.twig');
@@ -143,7 +145,7 @@ class ProjectsController extends InitializableController
 
     /**
      * @return Response
-     * @Config\Route("/", name = "site_projects_index")
+     * @Config\Route("/", name = "site_projects")
      */
     public function indexAction()
     {
