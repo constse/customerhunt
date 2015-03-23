@@ -10,11 +10,15 @@ security:
     dev:
       pattern: ^/(_(profiler|wdt|error)|css|images|js)/
       security: false
+    site_api:
+      pattern: /api
+      anonymous: ~
     site_login:
       pattern: ^/login$
       anonymous: ~
     site:
       pattern: ^/
+      security: true
       provider: user_provider
       form_login:
         login_path: site_security_login
@@ -33,5 +37,6 @@ security:
         path: site_security_logout
         target: site_security_login
   access_control:
+    - { path: /api, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
     - { path: ^/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
     - { path: ^/, roles: [ROLE_ADMIN] }

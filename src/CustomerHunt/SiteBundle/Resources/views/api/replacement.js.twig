@@ -1,0 +1,26 @@
+<script>
+var hunter_replacement_parameters = {{ view.parameters }};
+var hunter_replacement_replacements = {{ view.replacements }};
+
+function hunter_replacement_to_assoc_array(query) {
+    var parameters = {};
+    var temp_parameters = query.split('&');
+
+    for (var i = 0; i < temp_parameters.length; ++i) {
+        var temp_parameter = temp_parameters[i].split('=');
+        parameters[temp_parameter[0]] = temp_parameter[1];
+    }
+
+    return parameters;
+}
+
+function hunter_replacement_parse_url() {
+    var query = window.location.search().substr(1);
+
+    return (query != null && query != '') ? hunter_replacement_to_assoc_array(query) : {};
+}
+
+function hunter_replacement_init() {
+    var parameters = hunter_replacement_parse_url();
+}
+</script>

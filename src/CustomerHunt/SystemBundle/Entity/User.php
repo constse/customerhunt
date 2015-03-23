@@ -16,6 +16,12 @@ class User extends AbstractEntity implements UserInterface, \Serializable
 {
     /**
      * @var string
+     * @ORM\Column(name = "code", type = "string")
+     */
+    protected $code;
+
+    /**
+     * @var string
      * @ORM\Column(name = "password", type = "string")
      */
     protected $password;
@@ -52,6 +58,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     {
         parent::__construct();
 
+        $this->code = self::generateCode();
         $this->projects = new ArrayCollection();
         $this->roles = new ArrayCollection();
         $this->salt = self::generateSalt();
@@ -60,6 +67,17 @@ class User extends AbstractEntity implements UserInterface, \Serializable
     public function eraseCredentials()
     {
         return $this;
+    }
+
+    public static function generateCode()
+    {
+        $symbols = '0123456789abcdef';
+        $code = '';
+
+        foreach (range(1, 16) as $i) $salt .= $symbols[mt_rand(0, 15)];
+
+        return $code;
+//        return openssl_random_pseudo_bytes(32);
     }
 
     /**
@@ -74,6 +92,14 @@ class User extends AbstractEntity implements UserInterface, \Serializable
 
         return $salt;
 //        return openssl_random_pseudo_bytes(32);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCode()
+    {
+        return $this->code;
     }
 
     /**
@@ -132,6 +158,17 @@ class User extends AbstractEntity implements UserInterface, \Serializable
             'password' => $this->password,
             'salt' => $this->salt
         ));
+    }
+
+    /**
+     * @param string $code
+     * @return $this
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
     }
 
     /**
