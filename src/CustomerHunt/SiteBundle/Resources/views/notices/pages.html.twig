@@ -1,0 +1,20 @@
+{% if notice == 'page_added' %}
+    <h4>Страница добавлена</h4>
+    <p>Новая страница &laquo;{{ caption|e }}&raquo; была успешно добавлена.</p>
+{% endif %}
+{% if notice == 'page_changed' %}
+    <h4>Страница изменена</h4>
+    <p>Изменения страницы &laquo;{{ caption|e }}&raquo; были успешно сохранены.</p>
+{% endif %}
+{% if notice == 'caption_already_exist' %}
+    <h4>Страница уже существует</h4>
+    <p>
+        Страница с наименованием &laquo;{{ caption|e }}&raquo; уже существует.
+        Вы можете изменить наименование текущей страницы или проигнорировать данное сообщение.
+    </p>
+    <p><a href="{{ url('site_pages_edit', {'project': project, 'page': page}) }}" class="btn btn-warning">Изменить наименование</a></p>
+{% endif %}
+{% if notice == 'page_removed' %}
+    <h4>Страница удалена</h4>
+    <p>Страница &laquo;{{ caption|e }}&raquo; была успешно удалена.</p>
+{% endif %}

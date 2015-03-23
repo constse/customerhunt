@@ -1,0 +1,62 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}Страницы{% endblock %}
+
+{% block navigation %}
+    {% set project = view.project %}
+    <li>
+        <a href="{{ url('site_projects') }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; Проекты
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;
+            {% if project.caption|length > 27 %}{{ project.caption|e[:27] }}...{% else %}{{ project.caption|e }}{% endif %}
+        </a>
+    </li>
+    <li class="active">
+        <a><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Страницы</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% set project = view.project %}
+    <div class="page">
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Страницы
+            </h1>
+        </div>
+        <table class="table table-striped pages">
+            <thead>
+                <tr>
+                    <th>Наименование</th>
+                    <th>Описание</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for page in view.pages %}
+                <tr>
+                    <td>
+                        <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}">
+                            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
+                        </a>
+                    </td>
+                    <td class="text-muted">{% if page.description is not empty %}{{ page.description|e }}{% else %}&mdash;{% endif %}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="2" class="info text-center">Вы не добавили ни одной страницы</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
+        </a>
+        <a href="{{ url('site_pages_add', {'project': project.id}) }}" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить страницу
+        </a>
+    </div>
+{% endblock %}

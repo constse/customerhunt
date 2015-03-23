@@ -80,7 +80,7 @@ class ProjectsController extends InitializableController
             array('notice' => 'project_removed', 'caption' => $caption)
         );
 
-        return $this->redirectToRoute('site_projects_index');
+        return $this->redirectToRoute('site_projects');
     }
 
     /**

@@ -184,7 +184,7 @@ class TestPagesController extends InitializableController
      * @Config\Route("/{project}/test", name = "site_test_pages", requirements = {"project": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
-    public function testAction(Project $project)
+    public function indexAction(Project $project)
     {
         if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
 
