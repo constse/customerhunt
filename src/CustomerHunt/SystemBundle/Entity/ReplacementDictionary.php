@@ -40,7 +40,7 @@ class ReplacementDictionary extends AbstractEntity
 
     /**
      * @var ArrayCollection|Replacement[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Replacement", mappedBy = "dictionary")
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Replacement", mappedBy = "dictionary", cascade = {"persist", "remove"})
      */
     protected $replacements;
 

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Class Replacement
  * @package CustomerHunt\SystemBundle\Entity
  * @ORM\Entity
- * @ORM\Table(name = "replacement")
+ * @ORM\Table(name = "replacements")
  */
 class Replacement extends AbstractEntity
 {

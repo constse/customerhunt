@@ -1,0 +1,73 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}{{ view.page.caption|e }}{% endblock %}
+
+{% block navigation %}
+    {% set project = view.project %}
+    {% set page = view.page %}
+    <li>
+        <a href="{{ url('site_projects') }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; Проекты
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;
+            {% if project.caption|length > 27 %}{{ project.caption|e[:27] }}...{% else %}{{ project.caption|e }}{% endif %}
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_pages', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Страницы
+        </a>
+    </li>
+    <li class="active">
+        <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% set project = view.project %}
+    {% set page = view.page %}
+    <div class="page">
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
+            </h1>
+        </div>
+        {% set form = forms.page %}
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            {% set errors = form.caption.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.caption, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.caption.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.caption, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.description.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.description, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.description.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            <hr>
+            <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>
+            <hr>
+            <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
+            </a>
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Сохранить изменения
+            </button>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

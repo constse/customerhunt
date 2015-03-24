@@ -3,6 +3,11 @@ api:
   prefix: /api
   type: annotation
 
+replacement_dictionaries:
+  resource: "@CustomerHuntSiteBundle/Controller/ReplacementDictionariesController.php"
+  prefix: projects
+  type: annotation
+
 pages:
   resource: "@CustomerHuntSiteBundle/Controller/PagesController.php"
   prefix: /projects
