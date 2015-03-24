@@ -31,7 +31,7 @@
     <li>
         <a href="{{ url('site_replacement_dictionaries_edit', {'project': project.id, 'page': page.id, 'dictionary': dictionary.id}) }}">
             <span class="glyphicon glyphicon-book" aria-hidden="true"></span>
-            {% if dictionary.caption|length > 27 %}{{ page.caption|e[:27] }}...{% else %}{{ page.caption|e }}{% endif %}
+            {% if dictionary.caption|length > 27 %}{{ dictionary.caption|e[:27] }}...{% else %}{{ dictionary.caption|e }}{% endif %}
         </a>
     </li>
     <li class="active">

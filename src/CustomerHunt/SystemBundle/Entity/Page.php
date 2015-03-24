@@ -70,6 +70,14 @@ class Page extends AbstractEntity
     }
 
     /**
+     * @return ArrayCollection|ReplacementDictionary[]
+     */
+    public function getReplacementDictionaries()
+    {
+        return $this->replacementDictionaries;
+    }
+
+    /**
      * @param string $caption
      * @return $this
      */

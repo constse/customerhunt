@@ -23,13 +23,23 @@ class ApiController extends InitializableController
     {
         if ($project->getOwner()->getCode() !== $code) throw $this->createNotFoundException();
 
-        $this->view = array(
+        $parameters = array();
+        $replacements = array();
 
-        );
+        foreach ($page->getReplacementDictionaries() as $dictionary) {
+            $parameter = $dictionary->getParameter();
+            $parameters[] = $parameter;
+            $selector = array('selector' => $dictionary->getSelector());
+
+            foreach ($dictionary->getReplacements() as $replacement)
+                $selector['replacements'][$replacement->getPhrase()] = $replacement->getReplacement();
+
+            $replacements[$parameter][] = $selector;
+        }
 
         $response = new Response($this->renderView('CustomerHuntSiteBundle:api:replacement.js.twig', array(
-            'parameters' => json_encode(array(0)),
-            'replacements' => json_encode(array(0))
+            'parameters' => json_encode($parameters),
+            'replacements' => json_encode($replacements)
         )));
         $response->headers->set('Content-Type', 'text/javascript');
 

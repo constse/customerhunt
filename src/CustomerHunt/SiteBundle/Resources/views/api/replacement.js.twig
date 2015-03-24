@@ -1,6 +1,6 @@
-<script>
-var hunter_replacement_parameters = {{ view.parameters }};
-var hunter_replacement_replacements = {{ view.replacements }};
+{#<script>#}
+var hunter_replacement_parameters = {{ parameters|raw }};
+var hunter_replacement_replacements = {{ replacements|raw }};
 
 function hunter_replacement_to_assoc_array(query) {
     var parameters = {};
@@ -15,12 +15,32 @@ function hunter_replacement_to_assoc_array(query) {
 }
 
 function hunter_replacement_parse_url() {
-    var query = window.location.search().substr(1);
+    var query = window.location.search.substr(1);
 
     return (query != null && query != '') ? hunter_replacement_to_assoc_array(query) : {};
 }
 
 function hunter_replacement_init() {
     var parameters = hunter_replacement_parse_url();
+
+    var parameters_count = hunter_replacement_parameters.length;
+
+    for (var i = 0; i < parameters_count; ++i) {
+        if (parameters[hunter_replacement_parameters[i]]) {
+            var parameter_name = hunter_replacement_parameters[i];
+            var parameter_value = decodeURI(parameters[hunter_replacement_parameters[i]]);
+            var selectors_count = hunter_replacement_replacements[parameter_name].length;
+
+            for (var j = 0; j < selectors_count; ++j) {
+                if (hunter_replacement_replacements[parameter_name][j].replacements[parameter_value]) {
+                    var selector = hunter_replacement_replacements[parameter_name][j].selector;
+                    var replacement = hunter_replacement_replacements[parameter_name][j].replacements[parameter_value];
+                    $(selector).html(replacement);
+                }
+            }
+        }
+    }
 }
-</script>
+
+hunter_replacement_init();
+{#</script>#}
