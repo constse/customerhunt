@@ -151,7 +151,17 @@ class PagesController extends InitializableController
     {
         if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
 
-        $this->view = array('project' => $project, 'page' => $page);
+        $replacementDictionaries = $this->getRepository('ReplacementDictionary')->createQueryBuilder('d')
+            ->where('d.page = :page')
+            ->setParameters(array('page' => $page))
+            ->orderBy('d.createdAt', 'DESC')
+            ->getQuery()->getResult();
+
+        $this->view = array(
+            'project' => $project,
+            'page' => $page,
+            'replacementDictionaries' => $replacementDictionaries
+        );
 
         return $this->render('CustomerHuntSiteBundle:pages:page.html.twig');
     }

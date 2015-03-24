@@ -32,12 +32,6 @@ class Replacement extends AbstractEntity
     protected $phrase;
 
     /**
-     * @var string
-     * @ORM\Column(name = "selector", type = "text")
-     */
-    protected $selector;
-
-    /**
      * @return ReplacementDictionary
      */
     public function getDictionary()
@@ -59,14 +53,6 @@ class Replacement extends AbstractEntity
     public function getPhrase()
     {
         return $this->phrase;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSelector()
-    {
-        return $this->selector;
     }
 
     /**
@@ -98,17 +84,6 @@ class Replacement extends AbstractEntity
     public function setPhrase($phrase)
     {
         $this->phrase = $phrase;
-
-        return $this;
-    }
-
-    /**
-     * @param string $selector
-     * @return $this
-     */
-    public function setSelector($selector)
-    {
-        $this->selector = $selector;
 
         return $this;
     }

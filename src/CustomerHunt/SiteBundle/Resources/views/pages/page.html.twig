@@ -1,0 +1,134 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}{{ view.page.caption|e }}{% endblock %}
+
+{% block navigation %}
+    {% set project = view.project %}
+    {% set page = view.page %}
+    <li>
+        <a href="{{ url('site_projects') }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; Проекты
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;
+            {% if project.caption|length > 27 %}{{ project.caption|e[:27] }}...{% else %}{{ project.caption|e }}{% endif %}
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_pages', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> Страницы
+        </a>
+    </li>
+    <li class="active">
+        <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
+        </a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% set project = view.project %}
+    {% set page = view.page %}
+    <div class="page">
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
+            </h1>
+        </div>
+        <h2>Словари замен</h2>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Словарь</th>
+                <th>Селектор</th>
+                <th>Вариантов замен</th>
+                <th>Описание</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for dictionary in view.replacementDictionaries %}
+                <tr>
+                    <td>{{ dictionary.caption|e }}</td>
+                    <td>{{ dictionary.selector|e }}</td>
+                    <td>{{ dictionary.replacements|length }}</td>
+                    <td class="text-muted">{% if dictionary.description is not empty %}{{ dictionary.description|e }}{% else %}&mdash;{% endif %}</td>
+                    <td class="td-actions">
+                        <div class="actions">
+                            <a href="#" class="edit">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </a>
+                            <a href="#" class="remove">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="5" class="info text-center">Вы не добавили ни одного словаря замен</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="#" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить словарь замен
+        </a>
+        <h3>Код встраивания</h3>
+        <p>
+            В конец тэга HEAD вставьте следующий код:<br>
+            <code>{% filter escape %}<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>{% endfilter %}</code>
+        </p>
+        <p>
+            В конец тэга BODY вставьте следующий код:<br>
+            <code>{% filter escape %}<script src="{{ url('site_api_replacement', {'code': app.user.code|e, 'project': project.id, 'page': page.id}) }}"></script>{% endfilter %}</code>
+        </p>
+        <hr>
+        <a href="{{ url('site_pages', {'project': project.id}) }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
+        </a>
+        <a href="{{ url('site_pages_edit', {'project': project.id, 'page': page.id}) }}" class="btn btn-primary">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Редактировать страницу
+        </a>
+        <a href="{{ url('site_pages_remove', {'project': project.id, 'page': page.id}) }}" class="btn btn-danger page-remove">
+            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span> Удалить страницу
+        </a>
+    </div>
+{% endblock %}
+
+{% block body_additions %}
+    <script>
+        $(document).ready(function() {
+            $('.pages tr').hover(function() {
+                $(this).find('.actions').fadeIn(250);
+            }, function() {
+                $(this).find('.actions').fadeOut(250);
+            });
+            $('.actions a.edit').popover({
+                container: 'body',
+                content: 'Изменить',
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+            $('.actions a.remove').click(function(e) {
+                if (!confirm('Удалить тестовую страницу?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            }).popover({
+                container: 'body',
+                content: 'Удалить',
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+            $('a.page-remove').click(function(e) {
+                if (!confirm('Внимание! Все данные страницы "{{ view.page.caption|e }}" будут безвозвратно удалены. Вы уверены, что хотите продолжить?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
+{% endblock %}
