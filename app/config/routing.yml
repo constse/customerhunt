@@ -1,26 +1,26 @@
 api:
   resource: "@CustomerHuntSiteBundle/Controller/ApiController.php"
-  prefix: /api
+  prefix: /
   type: annotation
 
 replacement_dictionaries:
   resource: "@CustomerHuntSiteBundle/Controller/ReplacementDictionariesController.php"
-  prefix: projects
+  prefix: /
   type: annotation
 
 pages:
   resource: "@CustomerHuntSiteBundle/Controller/PagesController.php"
-  prefix: /projects
+  prefix: /
   type: annotation
 
 test_pages:
   resource: "@CustomerHuntSiteBundle/Controller/TestPagesController.php"
-  prefix: /projects
+  prefix: /
   type: annotation
 
 projects:
   resource: "@CustomerHuntSiteBundle/Controller/ProjectsController.php"
-  prefix: /projects
+  prefix: /
   type: annotation
 
 security:

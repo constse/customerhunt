@@ -25,6 +25,9 @@
                 {{ form_label(form.password.first, null, {'label_attr': {'class': 'control-label'}}) }}
                 {% if form.password.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.password.first, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
             </div>
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
             <div class="{{ class }}">
@@ -32,9 +35,15 @@
                 {% if form.password.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
             </div>
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
+            <div class="form-group">
+                <label class="control-label">Код авторизации</label>
+                <input type="text" value="{{ app.user.code|e }}" class="form-control" disabled="disabled">
+                <span class="help-block">
+                    <a href="{{ url('site_security_refresh_code') }}" class="refresh-code">
+                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Обновить код авторизации
+                    </a>
+                </span>
+            </div>
             <hr>
             <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>
             <hr>
@@ -46,4 +55,17 @@
             </button>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block body_additions %}
+    <script>
+        $(document).ready(function() {
+            $('.refresh-code').click(function(e) {
+                if (!confirm('Обновление кода авторизации приведет к изменению кодов встраивания для всех страниц Ваших проектов. Вы уверены, что хотите продолжить?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
 {% endblock %}

@@ -15,7 +15,7 @@ class ProjectsController extends InitializableController
     /**
      * @param Project $project
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/edit", name = "site_projects_edit", requirements = {"project": "\d+"})
+     * @Config\Route("/projects/{project}/edit", name = "site_projects_edit", requirements = {"project": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
     public function editAction(Project $project)
@@ -64,7 +64,7 @@ class ProjectsController extends InitializableController
      * @param Project $project
      * @return RedirectResponse
      * @throws NotFoundHttpException
-     * @Config\Route("/{project}/remove", name = "site_projects_remove", requirements = {"project": "\d+"})
+     * @Config\Route("/projects/{project}/remove", name = "site_projects_remove", requirements = {"project": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
     public function removeAction(Project $project)
@@ -85,7 +85,7 @@ class ProjectsController extends InitializableController
 
     /**
      * @return RedirectResponse|Response
-     * @Config\Route("/add", name = "site_projects_add")
+     * @Config\Route("/projects/add", name = "site_projects_add")
      */
     public function addAction()
     {
@@ -131,7 +131,7 @@ class ProjectsController extends InitializableController
     /**
      * @param Project $project
      * @return Response
-     * @Config\Route("/{project}", name = "site_projects_project", requirements = {"project": "\d+"})
+     * @Config\Route("/projects/{project}", name = "site_projects_project", requirements = {"project": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
     public function projectAction(Project $project)
@@ -145,7 +145,7 @@ class ProjectsController extends InitializableController
 
     /**
      * @return Response
-     * @Config\Route("/", name = "site_projects")
+     * @Config\Route("/projects", name = "site_projects")
      */
     public function indexAction()
     {

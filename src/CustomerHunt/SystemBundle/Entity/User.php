@@ -28,7 +28,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
 
     /**
      * @var ArrayCollection|Project[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", mappedBy = "owner")
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", mappedBy = "owner", cascade = {"remove"})
      */
     protected $projects;
 
@@ -74,7 +74,7 @@ class User extends AbstractEntity implements UserInterface, \Serializable
         $symbols = '0123456789abcdef';
         $code = '';
 
-        foreach (range(1, 16) as $i) $salt .= $symbols[mt_rand(0, 15)];
+        foreach (range(1, 16) as $i) $code .= $symbols[mt_rand(0, 15)];
 
         return $code;
 //        return openssl_random_pseudo_bytes(32);

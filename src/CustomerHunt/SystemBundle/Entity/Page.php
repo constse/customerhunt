@@ -34,7 +34,7 @@ class Page extends AbstractEntity
 
     /**
      * @var ArrayCollection|ReplacementDictionary[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\ReplacementDictionary", mappedBy = "page")
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\ReplacementDictionary", mappedBy = "page", cascade = {"persist", "remove"})
      */
     protected $replacementDictionaries;
 

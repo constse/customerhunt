@@ -20,7 +20,7 @@ class ReplacementDictionariesController extends InitializableController
      * @param Page $page
      * @param ReplacementDictionary $dictionary
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/pages/{page}/replacement-dictionaries/{dictionary}/replacements", name = "site_replacement_dictionaries_replacements",
+     * @Config\Route("/projects/{project}/pages/{page}/replacement-dictionaries/{dictionary}/replacements", name = "site_replacement_dictionaries_replacements",
      *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
@@ -66,7 +66,7 @@ class ReplacementDictionariesController extends InitializableController
      * @param Page $page
      * @param ReplacementDictionary $dictionary
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/pages/{page}/replacement-dictionaries/{dictionary}/edit", name = "site_replacement_dictionaries_edit",
+     * @Config\Route("/projects/{project}/pages/{page}/replacement-dictionaries/{dictionary}/edit", name = "site_replacement_dictionaries_edit",
      *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
@@ -107,7 +107,7 @@ class ReplacementDictionariesController extends InitializableController
      * @param Project $project
      * @param Page $page
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/pages/{page}/replacement-dictionaries/add", name = "site_replacement_dictionaries_add", requirements = {"project": "\d+", "page": "\d+"})
+     * @Config\Route("/projects/{project}/pages/{page}/replacement-dictionaries/add", name = "site_replacement_dictionaries_add", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
      */

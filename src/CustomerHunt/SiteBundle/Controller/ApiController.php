@@ -15,7 +15,7 @@ class ApiController extends InitializableController
      * @param Project $project
      * @param Page $page
      * @return Response
-     * @Config\Route("/replacement/{code}/{project}/{page}", name = "site_api_replacement", requirements = {"code": "[0-9a-f]+", "project": "\d+", "page": "\d+"})
+     * @Config\Route("/api/replacement/{code}/{project}/{page}", name = "site_api_replacement", requirements = {"code": "[0-9a-f]+", "project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
      */

@@ -34,13 +34,13 @@ class Project extends AbstractEntity
 
     /**
      * @var ArrayCollection|Page[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Page", mappedBy = "project")
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\Page", mappedBy = "project", cascade = {"persist", "remove"})
      */
     protected $pages;
 
     /**
      * @var ArrayCollection|TestPage[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\TestPage", mappedBy = "project")
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\TestPage", mappedBy = "project", cascade = {"persist", "remove"})
      */
     protected $testPages;
 

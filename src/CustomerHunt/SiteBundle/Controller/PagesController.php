@@ -16,7 +16,7 @@ class PagesController extends InitializableController
      * @param Project $project
      * @param Page $page
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/pages/{page}/edit", name = "site_pages_edit", requirements = {"project": "\d+", "page": "\d+"})
+     * @Config\Route("/projects/{project}/pages/{page}/edit", name = "site_pages_edit", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
      */
@@ -68,7 +68,7 @@ class PagesController extends InitializableController
      * @param Project $project
      * @param Page $page
      * @return RedirectResponse
-     * @Config\Route("/{project}/pages/{page}/remove", name = "site_pages_remove", requirements = {"project": "\d+", "page": "\d+"})
+     * @Config\Route("/projects/{project}/pages/{page}/remove", name = "site_pages_remove", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
      */
@@ -91,7 +91,7 @@ class PagesController extends InitializableController
     /**
      * @param Project $project
      * @return RedirectResponse|Response
-     * @Config\Route("/{project}/pages/add", name = "site_pages_add", requirements = {"project": "\d+"})
+     * @Config\Route("/projects/{project}/pages/add", name = "site_pages_add", requirements = {"project": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
     public function addAction(Project $project)
@@ -143,7 +143,7 @@ class PagesController extends InitializableController
      * @param Project $project
      * @param Page $page
      * @return Response
-     * @Config\Route("/{project}/pages/{page}", name = "site_pages_page", requirements = {"project": "\d+", "page": "\d+"})
+     * @Config\Route("/projects/{project}/pages/{page}", name = "site_pages_page", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
      */
@@ -169,7 +169,7 @@ class PagesController extends InitializableController
     /**
      * @param Project $project
      * @return Response
-     * @Config\Route("/{project}/pages", name = "site_pages", requirements = {"project": "\d+"})
+     * @Config\Route("/projects/{project}/pages", name = "site_pages", requirements = {"project": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      */
     public function indexAction(Project $project)

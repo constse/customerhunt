@@ -96,4 +96,22 @@ class SecurityController extends InitializableController
 
         return $this->render('CustomerHuntSiteBundle:security:profile.html.twig');
     }
+
+    /**
+     * @return RedirectResponse
+     * @Config\Route("/refresh-code", name = "site_security_refresh_code")
+     */
+    public function refreshCodeAction()
+    {
+        $this->user->setCode(User::generateCode());
+        $this->manager->persist($this->user);
+        $this->manager->flush();
+
+        $this->addNotice('success',
+            'CustomerHuntSiteBundle:notices:security.html.twig',
+            array('notice' => 'code_refreshed')
+        );
+
+        return $this->redirectToRoute('site_security_profile');
+    }
 }
