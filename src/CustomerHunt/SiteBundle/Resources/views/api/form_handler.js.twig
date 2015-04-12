@@ -1,0 +1,32 @@
+{#<script>#}
+var hunter_formhandler_action = '{{ action|e }}';
+var hunter_formhandler_handlers = {{ handlers|raw }};
+
+function hunter_formhandler_init() {
+    var handlers_count = hunter_formhandler_handlers.length;
+    for (var i = 0; i < handlers_count; ++i) {
+        var handler = hunter_formhandler_handlers[i];
+        var form = $(handler.selector);
+        form.unbind('submit');
+        form.attr('action', hunter_formhandler_action);
+        $('<input type="hidden" name="hunter_form_id" value="">').attr('value', handler.id).appentTo(form);
+        $('<input type="hidden" name="hunter_query" value="">').attr('value', $(window.location.search.substring(1))).appendTo(form);
+        form.submit(function(e) {
+            if (handler.ajax) {
+                $.ajax({
+                    cache: false,
+                    data: $(this).serialize(),
+                    dataType: 'json',
+                    error: function() { alert(handler.ajax_error); },
+                    method: 'POST',
+                    success: function() { alert(handler.ajax_success); },
+                    url: hunter_formhandler_action
+                });
+            }
+            else return true;
+        });
+    }
+}
+
+hunter_formhandler_init();
+{#</script>#}

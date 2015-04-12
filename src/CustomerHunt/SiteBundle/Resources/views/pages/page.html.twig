@@ -92,7 +92,7 @@
         </p>
         <p>
             В конец тэга BODY вставьте следующий код:<br>
-            {#<code>{% filter escape %}<script src="{{ url('site_api_replacement', {'code': app.user.code|e, 'project': project.id, 'page': page.id}) }}"></script>{% endfilter %}</code>#}
+            <code>{% filter escape %}<script src="{{ url('site_api_formhandler', {'code': app.user.code|e, 'project': project.id, 'page': page.id}) }}"></script>{% endfilter %}</code>
         </p>
         <hr>
         <h2>Словари замен</h2>

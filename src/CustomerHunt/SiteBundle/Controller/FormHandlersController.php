@@ -20,7 +20,7 @@ class FormHandlersController extends InitializableController
      * @param FormHandler $formHandler
      * @return Response
      * @Config\Route("/projects/{project}/pages/{page}/form-handlers/{formHandler}/edit", name = "site_formhandler_form_edit",
-     *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
+     *   requirements = {"project": "\d+", "page": "\d+", "formHandler": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
      * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
