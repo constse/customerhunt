@@ -26,6 +26,12 @@ class Page extends AbstractEntity
     protected $description;
 
     /**
+     * @var ArrayCollection|FormHandler[]
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\FormHandler", mappedBy = "page", cascade = {"persist", "remove"})
+     */
+    protected $formHandlers;
+
+    /**
      * @var Project
      * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", inversedBy = "pages")
      * @ORM\JoinColumn(name = "projectid", referencedColumnName = "id")
@@ -42,6 +48,7 @@ class Page extends AbstractEntity
     {
         parent::__construct();
 
+        $this->formHandlers = new ArrayCollection();
         $this->replacementDictionaries = new ArrayCollection();
     }
 
@@ -59,6 +66,14 @@ class Page extends AbstractEntity
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return ArrayCollection|FormHandler[]
+     */
+    public function getFormHandlers()
+    {
+        return $this->formHandlers;
     }
 
     /**

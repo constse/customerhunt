@@ -1,0 +1,20 @@
+{% if notice == 'form_added' %}
+    <h4>Форма добавлена</h4>
+    <p>Новая обработка формы &laquo;{{ caption|e }}&raquo; была успешно добавлена.</p>
+{% endif %}
+{% if notice == 'form_changed' %}
+    <h4>Форма изменена</h4>
+    <p>Изменения обработки формы &laquo;{{ caption|e }}&raquo; были успешно сохранены.</p>
+{% endif %}
+{% if notice == 'caption_already_exist' %}
+    <h4>Форма уже существует</h4>
+    <p>
+        Обработка формы с наименованием &laquo;{{ caption|e }}&raquo; уже существует.
+        Вы можете изменить наименование текущей обработки формы или проигнорировать данное сообщение.
+    </p>
+    <p><a href="{{ url('site_formhandler_form_edit', {'project': project, 'page': page, 'formHandler': formHandler}) }}" class="btn btn-warning">Изменить наименование</a></p>
+{% endif %}
+{% if notice == 'form_removed' %}
+    <h4>Форма удалена</h4>
+    <p>Обработка формы &laquo;{{ caption|e }}&raquo; была успешно удалена.</p>
+{% endif %}

@@ -3,6 +3,11 @@ api:
   prefix: /
   type: annotation
 
+formhandlers:
+  resource: "@CustomerHuntSiteBundle/Controller/FormHandlersController.php"
+  prefix: /
+  type: annotation
+
 replacement_dictionaries:
   resource: "@CustomerHuntSiteBundle/Controller/ReplacementDictionariesController.php"
   prefix: /

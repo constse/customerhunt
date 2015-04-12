@@ -25,3 +25,7 @@ body {
 .form {
     width: 600px;
 }
+
+.form .checkbox label {
+    font-weight: bold;
+}

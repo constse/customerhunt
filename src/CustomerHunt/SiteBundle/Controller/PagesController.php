@@ -151,6 +151,11 @@ class PagesController extends InitializableController
     {
         if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
 
+        $formHandlers = $this->getRepository('FormHandler')->createQueryBuilder('f')
+            ->where('f.page = :page')
+            ->setParameters(array('page' => $page))
+            ->orderBy('f.createdAt', 'DESC')
+            ->getQuery()->getResult();
         $replacementDictionaries = $this->getRepository('ReplacementDictionary')->createQueryBuilder('d')
             ->where('d.page = :page')
             ->setParameters(array('page' => $page))
@@ -160,6 +165,7 @@ class PagesController extends InitializableController
         $this->view = array(
             'project' => $project,
             'page' => $page,
+            'formHandlers' => $formHandlers,
             'replacementDictionaries' => $replacementDictionaries
         );
 
