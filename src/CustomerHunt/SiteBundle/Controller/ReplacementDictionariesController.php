@@ -42,13 +42,10 @@ class ReplacementDictionariesController extends InitializableController
             $this->manager->persist($dictionary);
             $this->manager->flush();
 
-            // TODO: need notice
-
-            return $this->redirectToRoute('site_replacement_dictionaries_edit', array(
-                'project' => $project->getId(),
-                'page' => $page->getId(),
-                'dictionary' => $dictionary->getId()
-            ));
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:replacement_dictionaries.html.twig',
+                array('notice' => 'replacements_changed', 'caption' => $dictionary->getCaption())
+            );
         }
 
         $this->forms['replacements'] = $form->createView();
@@ -84,7 +81,10 @@ class ReplacementDictionariesController extends InitializableController
             $this->manager->persist($dictionary);
             $this->manager->flush();
 
-            // TODO: need notice
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:replacement_dictionaries.html.twig',
+                array('notice' => 'dictionary_changed', 'caption' => $dictionary->getCaption())
+            );
 
             return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
                 'project' => $project->getId(),
@@ -124,7 +124,10 @@ class ReplacementDictionariesController extends InitializableController
             $this->manager->persist($dictionary);
             $this->manager->flush();
 
-            // TODO: need notice
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:replacement_dictionaries.html.twig',
+                array('notice' => 'dictionary_added', 'caption' => $dictionary->getCaption())
+            );
 
             return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
                 'project' => $project->getId(),

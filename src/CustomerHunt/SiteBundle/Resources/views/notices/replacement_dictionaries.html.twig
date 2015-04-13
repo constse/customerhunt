@@ -1,0 +1,12 @@
+{% if notice == 'dictionary_added' %}
+    <h4>Словарь добавлен</h4>
+    <p>Новый словарь замен &laquo;{{ caption|e }}&raquo; был успешно добавлен.</p>
+{% endif %}
+{% if notice == 'dictionary_changed' %}
+    <h4>Словарь изменен</h4>
+    <p>Изменения словаря замен &laquo;{{ caption|e }}&raquo; были успешно сохранены.</p>
+{% endif %}
+{% if notice == 'replacements_changed' %}
+    <h4>Набор фраз изменен</h4>
+    <p>Изменения набора фраз словаря замен &laquo;{{ caption|e }}&raquo; были успешно сохранены.</p>
+{% endif %}
