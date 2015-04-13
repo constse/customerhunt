@@ -26,7 +26,8 @@ class FormHandlerFormType extends AbstractEntityFormType
             ->add('errorRedirect', 'url', array('label' => 'URL для переадресации при ошибке обработки'))
             ->add('emailRecipients', 'textarea', array('label' => 'Адреса получателей электронного письма с уведомлением'))
             ->add('emailTemplate', 'textarea', array('label' => 'Шаблон уведомления (HTML)'))
-            ->add('customerEmail', 'checkbox', array('label' => 'Отправлять уведомление клиенту'))
+            ->add('customerEmail', 'checkbox', array('label' => 'Отправлять уведомление клиенту', 'required' => false))
+            ->add('customerEmailSubject', 'text', array('label' => 'Тема уведомления клиенту', 'required' => false))
             ->add('customerEmailTemplate', 'textarea', array('label' => 'Шаблон уведомления (HTML) для клиента', 'required' => false));
     }
 } 
