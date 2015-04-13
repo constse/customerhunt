@@ -92,7 +92,7 @@ class ApiController extends InitializableController
 
                 if (!is_null($emails)) {
                     $message = $mailer->createMessage()
-                        ->setSubject($handler->getClientEmailSubject())
+                        ->setSubject($handler->getCustomerEmailSubject())
                         ->setFrom('noreply@grundel.ru')
                         ->setTo($emails)
                         ->setBody($body, 'text/html');

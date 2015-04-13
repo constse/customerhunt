@@ -27,6 +27,12 @@ class FormHandler extends AbstractEntity
 
     /**
      * @var string
+     * @ORM\Column(name = "customeremailsubject", type = "string", nullable = true)
+     */
+    protected $customerEmailSubject;
+
+    /**
+     * @var string
      * @ORM\Column(name = "customeremailtemplate", type = "text", nullable = true)
      */
     protected $customerEmailTemplate;
@@ -94,6 +100,14 @@ class FormHandler extends AbstractEntity
     public function getCaption()
     {
         return $this->caption;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerEmailSubject()
+    {
+        return $this->customerEmailSubject;
     }
 
     /**
@@ -191,6 +205,17 @@ class FormHandler extends AbstractEntity
     public function setCustomerEmail($customerEmail)
     {
         $this->customerEmail = $customerEmail;
+
+        return $this;
+    }
+
+    /**
+     * @param string $customerEmailSubject
+     * @return $this
+     */
+    public function setCustomerEmailSubject($customerEmailSubject)
+    {
+        $this->customerEmailSubject = $customerEmailSubject;
 
         return $this;
     }
