@@ -20,7 +20,10 @@ function hunter_formhandler_init() {
                 error: function() { $(location).attr('href', handler.error_redirect); },
                 jsonpCallback: 'hunter_formhandler_callback',
                 method: 'GET',
-                success: function(data) { $(location).attr('href', handler.success_redirect); },
+                success: function(data) {
+                    if (data == 'ok') { $(location).attr('href', handler.success_redirect); return; }
+                    if (data == 'validation') { alert('Пожалуйста, заполните все поля перед отправкой формы!'); return; }
+                },
                 url: hunter_formhandler_action
             });
             e.preventDefault();

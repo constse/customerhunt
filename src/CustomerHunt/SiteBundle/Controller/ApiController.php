@@ -41,14 +41,30 @@ class ApiController extends InitializableController
 
             if (is_null($handler)) throw $this->createNotFoundException();
 
-            $body = $handler->getEmailTemplate();
+            $response = new Response();
+            $response->headers->set('Content-Type', 'application/json');
+            $callback = $this->request->query->get('callback', 'hunter_formhandler_callback');
+            $values = array();
+            $empty = false;
 
             foreach ($handler->getFields() as $field) {
-                $body = preg_replace('/%' . $field->getName() . '%/',
-                    $this->request->query->get($field->getName(), 'unknown'),
-                    $body
-                );
+                $value = trim($this->request->query->get($field->getName(), ''));
+
+                if (empty($value)) { $empty = true; break; }
+
+                $values[$field->getName()] = $values;
             }
+
+            if ($empty) {
+                $response->setContent(sprintf('%s(%s);', $callback, json_encode('validation')));
+
+                return $response;
+            }
+
+            $body = $handler->getEmailTemplate();
+
+            foreach ($handler->getFields() as $field)
+                $body = preg_replace('/%' . $field->getName() . '%/', $values[$field->getName()], $body);
 
             $body = preg_replace('/%hunter_query%/', $this->request->query->get('hunter_query', 'unknown'), $body);
 
@@ -59,15 +75,31 @@ class ApiController extends InitializableController
             $mailer = $this->get('mailer');
             $message = $mailer->createMessage()
                 ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
-                ->setFrom('noreply@navse360.ru')
+                ->setFrom('noreply@grundel.ru')
                 ->setTo($emails)
                 ->setBody($body, 'text/html');
             $mailer->send($message);
 
-            $callback = $this->request->query->get('callback', 'hunter_formhandler_callback');
+            if ($handler->isCustomerEmail()) {
+                $body = $handler->getCustomerEmailTemplate();
+                $emails = null;
 
-            $response = new Response();
-            $response->headers->set('Content-Type', 'application/json');
+                foreach ($handler->getFields() as $field) {
+                    $body = preg_replace('/%' . $field->getName() . '%/', $values[$field->getName()], $body);
+
+                    if ($field->isEmail()) $emails = $values[$field->getName()];
+                }
+
+                if (!is_null($emails)) {
+                    $message = $mailer->createMessage()
+                        ->setSubject($handler->getClientEmailSubject())
+                        ->setFrom('noreply@grundel.ru')
+                        ->setTo($emails)
+                        ->setBody($body, 'text/html');
+                    $mailer->send($message);
+                }
+            }
+
             $response->setContent(sprintf('%s(%s);', $callback, json_encode('ok')));
 
             return $response;

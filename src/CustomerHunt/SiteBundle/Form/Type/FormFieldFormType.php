@@ -15,6 +15,7 @@ class FormFieldFormType extends AbstractEntityFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('caption', 'text', array('label' => 'Наименование'))
-            ->add('name', 'text', array('label' => 'Атрибут NAME'));
+            ->add('name', 'text', array('label' => 'Атрибут NAME'))
+            ->add('email', 'checkbox', array('label' => 'Является адресом электронной почты клиента', 'required' => false));
     }
 } 

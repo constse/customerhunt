@@ -20,6 +20,18 @@ class FormHandler extends AbstractEntity
     protected $caption;
 
     /**
+     * @var bool
+     * @ORM\Column(name = "customeremail", type = "boolean")
+     */
+    protected $customerEmail;
+
+    /**
+     * @var string
+     * @ORM\Column(name = "customeremailtemplate", type = "text", nullable = true)
+     */
+    protected $customerEmailTemplate;
+
+    /**
      * @var string
      * @ORM\Column(name = "description", type = "text", nullable = true)
      */
@@ -72,8 +84,7 @@ class FormHandler extends AbstractEntity
     {
         parent::__construct();
 
-        $this->ajax = false;
-        $this->email = false;
+        $this->customerEmail = false;
         $this->fields = new ArrayCollection();
     }
 
@@ -83,6 +94,14 @@ class FormHandler extends AbstractEntity
     public function getCaption()
     {
         return $this->caption;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCustomerEmailTemplate()
+    {
+        return $this->customerEmailTemplate;
     }
 
     /**
@@ -147,12 +166,42 @@ class FormHandler extends AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isCustomerEmail()
+    {
+        return $this->customerEmail;
+    }
+
+    /**
      * @param string $caption
      * @return $this
      */
     public function setCaption($caption)
     {
         $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $customerEmail
+     * @return $this
+     */
+    public function setCustomerEmail($customerEmail)
+    {
+        $this->customerEmail = $customerEmail;
+
+        return $this;
+    }
+
+    /**
+     * @param string $customerTemplate
+     * @return $this
+     */
+    public function setCustomerEmailTemplate($customerTemplate)
+    {
+        $this->customerEmailTemplate = $customerTemplate;
 
         return $this;
     }

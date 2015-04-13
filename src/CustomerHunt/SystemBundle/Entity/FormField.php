@@ -19,6 +19,12 @@ class FormField extends AbstractEntity
     protected $caption;
 
     /**
+     * @var bool
+     * @ORM\COlumn(name = "email", type = "boolean")
+     */
+    protected $email;
+
+    /**
      * @var FormHandler
      * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\FormHandler", inversedBy = "fields")
      * @ORM\JoinColumn(name = "formid", referencedColumnName = "id")
@@ -30,6 +36,13 @@ class FormField extends AbstractEntity
      * @ORM\Column(name = "fieldname", type = "string")
      */
     protected $name;
+
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->email = false;
+    }
 
     /**
      * @return string
@@ -56,12 +69,31 @@ class FormField extends AbstractEntity
     }
 
     /**
+     * @return bool
+     */
+    public function isEmail()
+    {
+        return $this->email;
+    }
+
+    /**
      * @param string $caption
      * @return $this
      */
     public function setCaption($caption)
     {
         $this->caption = $caption;
+
+        return $this;
+    }
+
+    /**
+     * @param string $email
+     * @return $this
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
 
         return $this;
     }
