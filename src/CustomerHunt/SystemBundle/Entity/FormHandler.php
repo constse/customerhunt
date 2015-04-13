@@ -14,24 +14,6 @@ use Doctrine\ORM\Mapping as ORM;
 class FormHandler extends AbstractEntity
 {
     /**
-     * @var bool
-     * @ORM\Column(name = "ajax", type = "boolean")
-     */
-    protected $ajax;
-
-    /**
-     * @var string
-     * @ORM\Column(name = "ajaxmessageerror", type = "text", nullable = true)
-     */
-    protected $ajaxMessageError;
-
-    /**
-     * @var string
-     * @ORM\Column(name = "ajaxmessagesuccess", type = "text", nullable = true)
-     */
-    protected $ajaxMessageSuccess;
-
-    /**
      * @var string
      * @ORM\Column(name = "caption", type = "string")
      */
@@ -44,22 +26,22 @@ class FormHandler extends AbstractEntity
     protected $description;
 
     /**
-     * @var bool
-     * @ORM\Column(name = "email", type = "boolean")
-     */
-    protected $email;
-
-    /**
      * @var string
-     * @ORM\Column(name = "emailrecipients", type = "text", nullable = true)
+     * @ORM\Column(name = "emailrecipients", type = "text")
      */
     protected $emailRecipients;
 
     /**
      * @var string
-     * @ORM\Column(name = "emailtemplate", type = "text", nullable = true)
+     * @ORM\Column(name = "emailtemplate", type = "text")
      */
     protected $emailTemplate;
+
+    /**
+     * @var string
+     * @ORM\Column(name = "errorredirect", type = "text")
+     */
+    protected $errorRedirect;
 
     /**
      * @var ArrayCollection|FormField[]
@@ -76,15 +58,15 @@ class FormHandler extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name = "redired", type = "text", nullable = true)
-     */
-    protected $redirect;
-
-    /**
-     * @var string
      * @ORM\Column(name = "selector", type = "text")
      */
     protected $selector;
+
+    /**
+     * @var string
+     * @ORM\Column(name = "successredirect", type = "text")
+     */
+    protected $successRedirect;
 
     public function __construct()
     {
@@ -93,22 +75,6 @@ class FormHandler extends AbstractEntity
         $this->ajax = false;
         $this->email = false;
         $this->fields = new ArrayCollection();
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxMessageError()
-    {
-        return $this->ajaxMessageError;
-    }
-
-    /**
-     * @return string
-     */
-    public function getAjaxMessageSuccess()
-    {
-        return $this->ajaxMessageSuccess;
     }
 
     /**
@@ -143,6 +109,11 @@ class FormHandler extends AbstractEntity
         return $this->emailTemplate;
     }
 
+    public function getErrorRedirect()
+    {
+        return $this->errorRedirect;
+    }
+
     /**
      * @return ArrayCollection|FormField[]
      */
@@ -162,66 +133,17 @@ class FormHandler extends AbstractEntity
     /**
      * @return string
      */
-    public function getRedirect()
-    {
-        return $this->redirect;
-    }
-
-    /**
-     * @return string
-     */
     public function getSelector()
     {
         return $this->selector;
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isAjax()
+    public function getSuccessRedirect()
     {
-        return $this->ajax;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * @param bool $ajax
-     * @return $this
-     */
-    public function setAjax($ajax)
-    {
-        $this->ajax = $ajax;
-
-        return $this;
-    }
-
-    /**
-     * @param string $ajaxMessageError
-     * @return $this
-     */
-    public function setAjaxMessageError($ajaxMessageError)
-    {
-        $this->ajaxMessageError = $ajaxMessageError;
-
-        return $this;
-    }
-
-    /**
-     * @param string $ajaxMessageSuccess
-     * @return $this
-     */
-    public function setAjaxMessageSuccess($ajaxMessageSuccess)
-    {
-        $this->ajaxMessageSuccess = $ajaxMessageSuccess;
-
-        return $this;
+        return $this->successRedirect;
     }
 
     /**
@@ -242,17 +164,6 @@ class FormHandler extends AbstractEntity
     public function setDescription($description)
     {
         $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * @param bool $email
-     * @return $this
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
 
         return $this;
     }
@@ -280,6 +191,17 @@ class FormHandler extends AbstractEntity
     }
 
     /**
+     * @param string $errorRedirect
+     * @return $this
+     */
+    public function setErrorRedirect($errorRedirect)
+    {
+        $this->errorRedirect = $errorRedirect;
+
+        return $this;
+    }
+
+    /**
      * @param Page $page
      * @return $this
      */
@@ -291,23 +213,23 @@ class FormHandler extends AbstractEntity
     }
 
     /**
-     * @param string $redirect
-     * @return $this
-     */
-    public function setRedirect($redirect)
-    {
-        $this->redirect = $redirect;
-
-        return $this;
-    }
-
-    /**
      * @param string $selector
      * @return $this
      */
     public function setSelector($selector)
     {
         $this->selector = $selector;
+
+        return $this;
+    }
+
+    /**
+     * @param string $successRedirect
+     * @return $this
+     */
+    public function setSuccessRedirect($successRedirect)
+    {
+        $this->successRedirect = $successRedirect;
 
         return $this;
     }

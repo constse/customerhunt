@@ -30,44 +30,41 @@ class ApiController extends InitializableController
     {
         if ($project->getOwner()->getCode() !== $code) throw $this->createNotFoundException();
 
-        if ($this->request->isMethod('POST')) {
+        if ($this->request->query->get('hunter_form_id')) {
             /** @var FormHandler $handler */
             $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
                 ->select('f.page', 'p')
                 ->where('p = :page')
                 ->andWhere('f.id = :id')
-                ->setParameters(array('page' => $page, 'id' => $this->request->request->get('hunter_form_id', -1)))
+                ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
                 ->getQuery()->getResult();
 
             if (is_null($handler)) throw $this->createNotFoundException();
 
-            if ($handler->isEmail()) {
-                $body = $handler->getEmailTemplate();
+            $body = $handler->getEmailTemplate();
 
-                foreach ($handler->getFields() as $field) {
-                    $body = preg_replace('/%' . $field->getName() . '%/',
-                        $this->request->request->get($field->getName(), 'unknown'),
-                        $body
-                    );
-                }
-
-                $emails = $handler->getEmailRecipients();
-                $emails = preg_replace('/(,| |;)+/', ',', $emails);
-                $emails = explode(',', $emails);
-                /** @var \Swift_Mailer $mailer */
-                $mailer = $this->get('mailer');
-                $message = $mailer->createMessage()
-                    ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
-                    ->setFrom('noreply@navse360.ru')
-                    ->setTo($emails)
-                    ->setBody($body, 'text/html');
-                $mailer->send($message);
-
-                if ($handler->isAjax() && $this->request->isXmlHttpRequest()) {
-                    return new JsonResponse('ok');
-                }
-                else return $this->redirect($handler->getRedirect());
+            foreach ($handler->getFields() as $field) {
+                $body = preg_replace('/%' . $field->getName() . '%/',
+                    $this->request->query->get($field->getName(), 'unknown'),
+                    $body
+                );
             }
+
+            $body = preg_replace('/%hunter_query%/', $this->request->query->get('hunter_query', 'unknown'), $body);
+
+            $emails = $handler->getEmailRecipients();
+            $emails = preg_replace('/(,| |;)+/', ',', $emails);
+            $emails = explode(',', $emails);
+            /** @var \Swift_Mailer $mailer */
+            $mailer = $this->get('mailer');
+            $message = $mailer->createMessage()
+                ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
+                ->setFrom('noreply@navse360.ru')
+                ->setTo($emails)
+                ->setBody($body, 'text/html');
+            $mailer->send($message);
+
+            return new JsonResponse('ok');
         }
 
         throw $this->createNotFoundException();
@@ -100,9 +97,8 @@ class ApiController extends InitializableController
             $handlers[] = array(
                 'id' => $form->getId(),
                 'selector' => $form->getSelector(),
-                'ajax' => $form->isAjax(),
-                'ajax_success' => $form->getAjaxMessageSuccess(),
-                'ajax_error' => $form->getAjaxMessageError()
+                'success_redirect' => $form->getSuccessRedirect(),
+                'error_redirect' => $form->getErrorRedirect()
             );
         }
 

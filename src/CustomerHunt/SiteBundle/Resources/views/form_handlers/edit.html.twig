@@ -37,142 +37,125 @@
     {% set page = view.page %}
     {% set formHandler = view.formHandler %}
     <div class="page">
-    <div class="page-header">
-        <h1>
-            <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ formHandler.caption|e }}
-        </h1>
-    </div>
-    {% set form = forms.form %}
-    {{ form_start(form, {'attr': {'class': 'form'}}) }}
-        {% set errors = form.caption.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.caption, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.caption.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.caption, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> {{ formHandler.caption|e }}
+            </h1>
         </div>
-        {% set errors = form.description.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.description, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.description.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        {% set errors = form.selector.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.selector, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.selector.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.selector, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        {% set prototype = form.fields.vars.prototype %}
-        {% set prototype_source = '<div class="row"><div class="col-xs-6 col-sm-6 col-md-6 form-inline">' ~
-            form_label(prototype.caption) ~ form_widget(prototype.caption, {'attr': {'class': 'form-control'}}) ~
-            '</div><div class="col-xs-6 col-sm-6 col-md-6 form-inline">' ~
-            form_label(prototype.name) ~ form_widget(prototype.name, {'attr': {'class': 'form-control'}}) ~
-            '</div></div>' %}
-        <div id="fields" data-prototype="{{ prototype_source|e }}">
-            {{ form_label(form.fields) }}
-            {% for field in form.fields %}
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-xs-6 col-sm-6 col-md-6 form-inline">
-                            {{ form_label(field.caption) }}
-                            {{ form_widget(field.caption, {'attr': {'class': 'form-control'}}) }}
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 form-inline">
-                            {{ form_label(field.name) }}
-                            {{ form_widget(field.name, {'attr': {'class': 'form-control'}}) }}
+        {% set form = forms.form %}
+        {{ form_start(form, {'attr': {'class': 'form'}}) }}
+            {% set errors = form.caption.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.caption, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.caption.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.caption, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.description.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.description, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.description.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.selector.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.selector, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.selector.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.selector, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set prototype = form.fields.vars.prototype %}
+            {% set prototype_source = '<div class="row"><div class="col-xs-6 col-sm-6 col-md-6 form-inline">' ~
+                form_label(prototype.caption) ~ form_widget(prototype.caption, {'attr': {'class': 'form-control'}}) ~
+                '</div><div class="col-xs-6 col-sm-6 col-md-6 form-inline">' ~
+                form_label(prototype.name) ~ form_widget(prototype.name, {'attr': {'class': 'form-control'}}) ~
+                '</div></div>' %}
+            <div id="fields" data-prototype="{{ prototype_source|e }}">
+                {{ form_label(form.fields) }}
+                {% for field in form.fields %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-xs-6 col-sm-6 col-md-6 form-inline">
+                                {{ form_label(field.caption) }}
+                                {{ form_widget(field.caption, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="col-xs-6 col-sm-6 col-md-6 form-inline">
+                                {{ form_label(field.name) }}
+                                {{ form_widget(field.name, {'attr': {'class': 'form-control'}}) }}
+                            </div>
                         </div>
                     </div>
-                </div>
-            {% endfor %}
-        </div>
-        <span class="help-block">
-            <a href="javascript:void(0);" id="add-field">
-                <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Добавить еще один параметр
+                {% endfor %}
+            </div>
+            <span class="help-block">
+                <a href="javascript:void(0);" id="add-field">
+                    <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Добавить еще один параметр
+                </a>
+            </span>
+            {% set errors = form.successRedirect.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.successRedirect, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.successRedirect.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.successRedirect, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.errorRedirect.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.errorRedirect, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.errorRedirect.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.errorRedirect, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.emailRecipients.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.emailRecipients, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.emailRecipients.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.emailRecipients, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.emailTemplate.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.emailTemplate, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.emailTemplate.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.emailTemplate, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+                <span class="help-block">
+                    Чтобы вставить значение параметра формы, напишите <code>%&lt;атрибут NAME параметра&gt;%</code>.<br>
+                    <code>%hunter_query%</code> &mdash; GET-параметры.
+                </span>
+            </div>
+            <hr>
+            <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>
+            <hr>
+            <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}" class="btn btn-default">
+                <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
             </a>
-        </span>
-        <div class="checkbox">
-            <label>
-                {{ form_widget(form.ajax) }} {{ form.ajax.vars.label }}
-            </label>
-        </div>
-        {% set errors = form.ajaxMessageSuccess.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.ajaxMessageSuccess, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.ajaxMessageSuccess.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.ajaxMessageSuccess, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        {% set errors = form.ajaxMessageError.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.ajaxMessageError, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.ajaxMessageError.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.ajaxMessageError, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        {% set errors = form.redirect.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.redirect, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.redirect.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.redirect, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        <div class="checkbox">
-            <label>
-                {{ form_widget(form.email) }} {{ form.email.vars.label }}
-            </label>
-        </div>
-        {% set errors = form.emailRecipients.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.emailRecipients, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.emailRecipients.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.emailRecipients, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        {% set errors = form.emailTemplate.vars.errors %}
-        {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-        <div class="{{ class }}">
-            {{ form_label(form.emailTemplate, null, {'label_attr': {'class': 'control-label'}}) }}
-            {% if form.emailTemplate.vars.required %}<span class="text-danger">*</span>{% endif %}
-            {{ form_widget(form.emailTemplate, {'attr': {'class': 'form-control'}}) }}
-            {% if errors|length > 0 %}
-                {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-            {% endif %}
-        </div>
-        <span class="help-block">Чтобы вставить значение параметра формы, напишите <code>%&lt;атрибут NAME параметра&gt;%</code></span>
-        <hr>
-        <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>
-        <hr>
-        <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}" class="btn btn-default">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
-        </a>
-        <button type="submit" class="btn btn-success">
-            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Сохранить изменения
-        </button>
-    {{ form_end(form) }}
+            <button type="submit" class="btn btn-success">
+                <span class="glyphicon glyphicon-save" aria-hidden="true"></span> Добавить новую обработку формы
+            </button>
+        {{ form_end(form) }}
     </div>
 {% endblock %}
 
@@ -188,17 +171,6 @@
                 ).appendTo(fields);
                 fields_count++;
             });
-            $('#{{ form.ajax.vars.id }}').change(function() {
-                var checked = $(this).is(':checked');
-                $('#{{ form.ajaxMessageSuccess.vars.id }}').prop('disabled', !checked);
-                $('#{{ form.ajaxMessageError.vars.id }}').prop('disabled', !checked);
-                $('#{{ form.redirect.vars.id }}').prop('disabled', checked);
-            }).change();
-            $('#{{ form.email.vars.id }}').change(function() {
-                var checked = $(this).is(':checked');
-                $('#{{ form.emailRecipients.vars.id }}').prop('disabled', !checked);
-                $('#{{ form.emailTemplate.vars.id }}').prop('disabled', !checked);
-            }).change();
         });
     </script>
 {% endblock %}

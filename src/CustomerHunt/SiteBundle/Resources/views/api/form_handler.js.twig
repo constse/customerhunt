@@ -1,4 +1,4 @@
-{#<script>#}
+<script>
 var hunter_formhandler_action = '{{ action|e }}';
 var hunter_formhandler_handlers = {{ handlers|raw }};
 
@@ -12,21 +12,20 @@ function hunter_formhandler_init() {
         $('<input type="hidden" name="hunter_form_id" value="">').attr('value', handler.id).appentTo(form);
         $('<input type="hidden" name="hunter_query" value="">').attr('value', $(window.location.search.substring(1))).appendTo(form);
         form.submit(function(e) {
-            if (handler.ajax) {
-                $.ajax({
-                    cache: false,
-                    data: $(this).serialize(),
-                    dataType: 'json',
-                    error: function() { alert(handler.ajax_error); },
-                    method: 'POST',
-                    success: function() { alert(handler.ajax_success); },
-                    url: hunter_formhandler_action
-                });
-            }
-            else return true;
+            $.ajax({
+                cache: false,
+                data: $(this).serialize(),
+                dataType: 'json',
+                error: function() { $(location).attr('href', handler.error_redirect); },
+                method: 'GET',
+                success: function() { $(location).attr('href', handler.success_redirect); },
+                url: hunter_formhandler_action
+            });
+            e.preventDefault();
+            return false;
         });
     }
 }
 
 hunter_formhandler_init();
-{#</script>#}
+</script>
