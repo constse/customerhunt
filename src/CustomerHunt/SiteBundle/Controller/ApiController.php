@@ -30,14 +30,14 @@ class ApiController extends InitializableController
     {
         if ($project->getOwner()->getCode() !== $code) throw $this->createNotFoundException();
 
-        if ($this->request->query->get('hunter_form_id')) {
+        if ($this->request->query->has('hunter_form_id')) {
             /** @var FormHandler $handler */
             $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
                 ->leftJoin('f.page', 'p')
                 ->where('p = :page')
                 ->andWhere('f.id = :id')
                 ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
-                ->getQuery()->getResult();
+                ->getQuery()->getOneOrNullResult();
 
             if (is_null($handler)) throw $this->createNotFoundException();
 
