@@ -30,49 +30,48 @@ class ApiController extends InitializableController
     {
         if ($project->getOwner()->getCode() !== $code) throw $this->createNotFoundException();
 
-        try {
-            if ($this->request->query->get('hunter_form_id')) {
-                /** @var FormHandler $handler */
-                $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
-                    ->select('f.page', 'p')
-                    ->where('p = :page')
-                    ->andWhere('f.id = :id')
-                    ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
-                    ->getQuery()->getResult();
+        if ($this->request->query->get('hunter_form_id')) {
+            /** @var FormHandler $handler */
+            $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
+                ->select('f.page', 'p')
+                ->where('p = :page')
+                ->andWhere('f.id = :id')
+                ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
+                ->getQuery()->getResult();
 
-                if (is_null($handler)) return new JsonResponse('unknown handler'); // throw $this->createNotFoundException();
+            if (is_null($handler)) throw $this->createNotFoundException();
 
-                $body = $handler->getEmailTemplate();
+            $body = $handler->getEmailTemplate();
 
-                foreach ($handler->getFields() as $field) {
-                    $body = preg_replace('/%' . $field->getName() . '%/',
-                        $this->request->query->get($field->getName(), 'unknown'),
-                        $body
-                    );
-                }
-
-                $body = preg_replace('/%hunter_query%/', $this->request->query->get('hunter_query', 'unknown'), $body);
-
-                $emails = $handler->getEmailRecipients();
-                $emails = preg_replace('/(,| |;)+/', ',', $emails);
-                $emails = explode(',', $emails);
-                /** @var \Swift_Mailer $mailer */
-                $mailer = $this->get('mailer');
-                $message = $mailer->createMessage()
-                    ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
-                    ->setFrom('noreply@navse360.ru')
-                    ->setTo($emails)
-                    ->setBody($body, 'text/html');
-                $mailer->send($message);
-
-                return new JsonResponse('ok');
+            foreach ($handler->getFields() as $field) {
+                $body = preg_replace('/%' . $field->getName() . '%/',
+                    $this->request->query->get($field->getName(), 'unknown'),
+                    $body
+                );
             }
-        }
-        catch (\Exception $e) {
-            return new JsonResponse($e->getMessage());
+
+            $body = preg_replace('/%hunter_query%/', $this->request->query->get('hunter_query', 'unknown'), $body);
+
+            $emails = $handler->getEmailRecipients();
+            $emails = preg_replace('/(,| |;)+/', ',', $emails);
+            $emails = explode(',', $emails);
+            /** @var \Swift_Mailer $mailer */
+            $mailer = $this->get('mailer');
+            $message = $mailer->createMessage()
+                ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
+                ->setFrom('noreply@navse360.ru')
+                ->setTo($emails)
+                ->setBody($body, 'text/html');
+            $mailer->send($message);
+
+            $response = new Response();
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setContent('hunter_formhandler_callback(' . json_encode('ok') . ');');
+
+            return $response;
         }
 
-//        throw $this->createNotFoundException();
+        throw $this->createNotFoundException();
     }
 
     /**
