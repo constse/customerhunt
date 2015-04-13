@@ -33,8 +33,8 @@ class ApiController extends InitializableController
         if ($this->request->query->get('hunter_form_id')) {
             /** @var FormHandler $handler */
             $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
-                ->select('f.page', 'p')
-                ->where('f.page = :page')
+                ->leftJoin('f.page', 'p')
+                ->where('p = :page')
                 ->andWhere('f.id = :id')
                 ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
                 ->getQuery()->getResult();
