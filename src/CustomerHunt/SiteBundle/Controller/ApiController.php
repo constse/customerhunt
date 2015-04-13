@@ -34,7 +34,7 @@ class ApiController extends InitializableController
             /** @var FormHandler $handler */
             $handler = $this->getRepository('FormHandler')->createQueryBuilder('f')
                 ->select('f.page', 'p')
-                ->where('p = :page')
+                ->where('f.page = :page')
                 ->andWhere('f.id = :id')
                 ->setParameters(array('page' => $page, 'id' => $this->request->query->get('hunter_form_id')))
                 ->getQuery()->getResult();
@@ -64,9 +64,11 @@ class ApiController extends InitializableController
                 ->setBody($body, 'text/html');
             $mailer->send($message);
 
+            $callback = $this->request->query->get('callback', 'hunter_formhandler_callback');
+
             $response = new Response();
             $response->headers->set('Content-Type', 'application/json');
-            $response->setContent('hunter_formhandler_callback(' . json_encode('ok') . ');');
+            $response->setContent(sprintf('%s(%s);', $callback, json_encode('ok')));
 
             return $response;
         }
