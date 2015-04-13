@@ -52,7 +52,7 @@ class ApiController extends InitializableController
 
                 if (empty($value)) { $empty = true; break; }
 
-                $values[$field->getName()] = $values;
+                $values[$field->getName()] = $value;
             }
 
             if ($empty) {
