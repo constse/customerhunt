@@ -17,9 +17,9 @@ function hunter_formhandler_init() {
                 cache: false,
                 data: $(this).serialize(),
                 dataType: 'json',
-                error: function() { $(location).attr('href', handler.error_redirect); },
+                error: function() { alert('error'); /*$(location).attr('href', handler.error_redirect);*/ },
                 method: 'GET',
-                success: function() { $(location).attr('href', handler.success_redirect); },
+                success: function(data) { alert(data); /*$(location).attr('href', handler.success_redirect);*/ },
                 url: hunter_formhandler_action
             });
             e.preventDefault();
