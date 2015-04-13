@@ -9,8 +9,12 @@ function hunter_formhandler_init() {
         var form = $(handler.selector);
         form.unbind('submit');
         form.attr('action', hunter_formhandler_action);
-        $('<input type="hidden" name="hunter_form_id" value="">').attr('value', handler.id).appentTo(form);
-        $('<input type="hidden" name="hunter_query" value="">').attr('value', $(window.location.search.substring(1))).appendTo(form);
+        var hidden = $('<input type="hidden" name="hunter_form_id" value="">')
+        hidden.attr('value', handler.id);
+        form.append(hidden);
+        hidden = $('<input type="hidden" name="hunter_query" value="">')
+        hidden.attr('value', $(window.location.search.substring(1)));
+        form.append(hidden);
         form.submit(function(e) {
             $.ajax({
                 cache: false,
