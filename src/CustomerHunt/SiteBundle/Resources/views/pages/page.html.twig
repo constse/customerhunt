@@ -142,6 +142,10 @@
             <code>{% filter escape %}<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>{% endfilter %}</code>
         </p>
         <p>
+            Подключите API Яндекс.Карт, если он еще не подключен. В конец тэга HEAD вставьте следующий код:<br>
+            <code>{% filter escape %}<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>{% endfilter %}</code>
+        </p>
+        <p>
             В конец тэга BODY вставьте следующий код:<br>
             <code>{% filter escape %}<script src="{{ url('site_api_replacement', {'code': app.user.code|e, 'project': project.id, 'page': page.id}) }}"></script>{% endfilter %}</code>
         </p>
