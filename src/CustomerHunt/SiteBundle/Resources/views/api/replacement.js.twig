@@ -1,4 +1,5 @@
 {#<script>#}
+var hunter_replacement_loaded = false;
 var hunter_replacement_city = null;
 var hunter_replacement_cities = {{ cities|raw }};
 var hunter_replacement_parameters = {{ parameters|raw }};
@@ -54,6 +55,8 @@ function hunter_replacement_init() {
             }
         }
     }
+
+    hunter_replacement_loaded = true;
 }
 
 function hunter_replacement_ymaps_init() {
@@ -79,5 +82,6 @@ $(document).ready(function() {
     ymaps_script.attr('src', 'http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU');
     $('head').append(ymaps_script);
     ymaps_script.load(function() { ymaps.ready(hunter_replacement_ymaps_init); });
+    setTimeout(function() { if (!hunter_replacement_loaded) hunter_replacement_ymaps_init(); }, 5000);
 });
 {#</script>#}
