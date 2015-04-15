@@ -45,6 +45,12 @@ class FormHandler extends AbstractEntity
 
     /**
      * @var string
+     * @ORM\Column(name = "emailfrom", type = "string")
+     */
+    protected $emailFrom;
+
+    /**
+     * @var string
      * @ORM\Column(name = "emailrecipients", type = "text")
      */
     protected $emailRecipients;
@@ -124,6 +130,14 @@ class FormHandler extends AbstractEntity
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailFrom()
+    {
+        return $this->emailFrom;
     }
 
     /**
@@ -238,6 +252,13 @@ class FormHandler extends AbstractEntity
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+
+    public function setEmailFrom($emailFrom)
+    {
+        $this->emailFrom = $emailFrom;
 
         return $this;
     }

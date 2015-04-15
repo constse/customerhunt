@@ -3,9 +3,11 @@
 namespace CustomerHunt\SiteBundle\Controller;
 
 use CustomerHunt\SystemBundle\Controller\InitializableController;
+use CustomerHunt\SystemBundle\Entity\City;
 use CustomerHunt\SystemBundle\Entity\FormHandler;
 use CustomerHunt\SystemBundle\Entity\Page;
 use CustomerHunt\SystemBundle\Entity\Project;
+use CustomerHunt\SystemBundle\Entity\Replacement;
 use CustomerHunt\SystemBundle\Entity\ReplacementDictionary;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -75,7 +77,7 @@ class ApiController extends InitializableController
             $mailer = $this->get('mailer');
             $message = $mailer->createMessage()
                 ->setSubject('Customer Hunt: ' . $page->getCaption() . ' - обработка формы ' . $handler->getCaption())
-                ->setFrom('noreply@grundel.ru')
+                ->setFrom($handler->getEmailFrom())
                 ->setTo($emails)
                 ->setBody($body, 'text/html');
             $mailer->send($message);
@@ -93,7 +95,7 @@ class ApiController extends InitializableController
                 if (!is_null($emails)) {
                     $message = $mailer->createMessage()
                         ->setSubject($handler->getCustomerEmailSubject())
-                        ->setFrom('noreply@grundel.ru')
+                        ->setFrom($handler->getEmailFrom())
                         ->setTo($emails)
                         ->setBody($body, 'text/html');
                     $mailer->send($message);
@@ -167,6 +169,21 @@ class ApiController extends InitializableController
     {
         if ($project->getOwner()->getCode() !== $code) throw $this->createNotFoundException();
 
+        $cities = array();
+
+        /** @var City $city */
+        foreach ($project->getCities() as $city)
+            $cities[] = array(
+                'latitude' => $city->getLatitude(),
+                'longitude' => $city->getLongitude(),
+                'caption' => $city->getCaption(),
+                'ablative' => $city->getAblative(),
+                'accusative' => $city->getAccusative(),
+                'dative' => $city->getDative(),
+                'genitive' => $city->getGenitive(),
+                'prepositional' => $city->getPrepositional()
+            );
+
         $parameters = array();
         $replacements = array();
 
@@ -176,13 +193,17 @@ class ApiController extends InitializableController
             $parameters[] = $parameter;
             $selector = array('selector' => $dictionary->getSelector());
 
-            foreach ($dictionary->getReplacements() as $replacement)
-                $selector['replacements'][$replacement->getPhrase()] = $replacement->getReplacement();
+            /** @var Replacement $replacement */
+            foreach ($dictionary->getReplacements() as $replacement) {
+                $selector['replacements'][$replacement->getPhrase()]['default'] = $replacement->getReplacement();
+                $selector['replacements'][$replacement->getPhrase()]['city'] = $replacement->getCityReplacement();
+            }
 
             $replacements[$parameter][] = $selector;
         }
 
         $response = new Response($this->renderView('CustomerHuntSiteBundle:api:replacement.js.twig', array(
+            'cities' => json_encode($cities),
             'parameters' => json_encode($parameters),
             'replacements' => json_encode($replacements)
         )));

@@ -29,9 +29,7 @@
         </a>
     </li>
     <li class="active">
-        <a href="{{ url('site_pages_page', {'project': project.id, 'page': page.id}) }}">
-            <span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}
-        </a>
+        <a><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{ page.caption|e }}</a>
     </li>
 {% endblock %}
 

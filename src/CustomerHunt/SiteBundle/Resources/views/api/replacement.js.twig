@@ -1,4 +1,6 @@
 {#<script>#}
+var hunter_replacement_city = null;
+var hunter_replacement_cities = {{ cities|raw }};
 var hunter_replacement_parameters = {{ parameters|raw }};
 var hunter_replacement_replacements = {{ replacements|raw }};
 
@@ -20,9 +22,28 @@ function hunter_replacement_parse_url() {
     return (query != null && query != '') ? hunter_replacement_to_assoc_array(query) : {};
 }
 
-function hunter_replacement_init() {
-    var parameters = hunter_replacement_parse_url();
+function hunter_replacement_ymaps_init() {
+    var geolocation = ymaps.geolocation;
+    var latitude = geolocation.latitude * Math.PI / 180.0, longitude = geolocation.longitude * Math.PI / 180.0;
+    var cities_count = hunter_replacement_cities.length;
+    var min = 1000000000, minIndex = 0;
 
+    for (var i = 0; i < cities_count; ++i) {
+        city_latitude = hunter_replacement_cities[i].latitude * Math.PI / 180.0;
+        city_longitude = hunter_replacement_cities[i].longitude * Math.PI / 180.0;
+        var l = Math.acos(Math.sin(city_latitude)*Math.sin(latitude)+Math.cos(latitude)*Math.cos(city_longitude-longitude));
+
+        if (l < min) { min = l; minIndex = i; }
+    }
+
+    hunter_replacement_city = hunter_replacement_cities[minIndex];
+    alert(geolocation.latitude + '  ' + geolocation.longitude);
+}
+
+function hunter_replacement_init() {
+    var city = hunter_replacement_city;
+
+    var parameters = hunter_replacement_parse_url();
     var parameters_count = hunter_replacement_parameters.length;
 
     for (var i = 0; i < parameters_count; ++i) {
@@ -34,7 +55,18 @@ function hunter_replacement_init() {
             for (var j = 0; j < selectors_count; ++j) {
                 if (hunter_replacement_replacements[parameter_name][j].replacements[parameter_value]) {
                     var selector = hunter_replacement_replacements[parameter_name][j].selector;
-                    var replacement = hunter_replacement_replacements[parameter_name][j].replacements[parameter_value];
+                    var replacement = hunter_replacement_replacements[parameter_name][j].replacements[parameter_value]['default'];
+                    var city_replacement = hunter_replacement_replacements[parameter_name][j].replacements[parameter_value]['city'];
+
+                    if (city && city_replacement) {
+                        city_replacement = city_replacement.replace('%city%', city.caption);
+                        city_replacement = city_replacement.replace('%city_gen%', city.genitive);
+                        city_replacement = city_replacement.replace('%city_dat%', city.dative);
+                        city_replacement = city_replacement.replace('%city_acc%', city.accusative);
+                        city_replacement = city_replacement.replace('%city_abl%', city.ablative);
+                        city_replacement = city_replacement.replace('%city_pre%', city.prepositional);
+                        replacement = city_replacement;
+                    }
                     $(selector).html(replacement);
                 }
             }
@@ -42,5 +74,13 @@ function hunter_replacement_init() {
     }
 }
 
-$(document).ready(function() { hunter_replacement_init(); });
+var ymaps = null;
+
+$(document).ready(function() {
+    $('head').append('<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>');
+    setTimeout(function() {
+        ymaps.ready(hunter_replacement_ymaps_init);
+        hunter_replacement_init();
+    }, 1000);
+});
 {#</script>#}

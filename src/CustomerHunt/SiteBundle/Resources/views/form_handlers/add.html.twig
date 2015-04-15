@@ -76,7 +76,8 @@
                 form_label(prototype.name) ~ form_widget(prototype.name, {'attr': {'class': 'form-control'}}) ~
                 '</div><div class="checkbox"><label>' ~
                 form_widget(prototype.email) ~ ' ' ~ prototype.email.vars.label ~
-                '</label></div></div>' %}
+                '</label></div></div>'
+            %}
             <div id="fields" data-prototype="{{ prototype_source|e }}">
                 {{ form_label(form.fields) }}
                 {% for field in form.fields %}
@@ -120,6 +121,16 @@
                 {{ form_label(form.errorRedirect, null, {'label_attr': {'class': 'control-label'}}) }}
                 {% if form.errorRedirect.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.errorRedirect, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.emailFrom.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.emailFrom, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.emailFrom.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.emailFrom, {'attr': {'class': 'form-control'}}) }}
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}

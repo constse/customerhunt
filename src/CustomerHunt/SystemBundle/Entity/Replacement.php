@@ -13,6 +13,12 @@ use Doctrine\ORM\Mapping as ORM;
 class Replacement extends AbstractEntity
 {
     /**
+     * @var string
+     * @ORM\Column(name = "cityreplacement", type = "text", nullable = true)
+     */
+    protected $cityReplacement;
+
+    /**
      * @var ReplacementDictionary
      * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\ReplacementDictionary", inversedBy = "replacements")
      * @ORM\JoinColumn(name = "dictionaryid", referencedColumnName = "id")
@@ -30,6 +36,14 @@ class Replacement extends AbstractEntity
      * @ORM\Column(name = "phrase", type = "text")
      */
     protected $phrase;
+
+    /**
+     * @return string
+     */
+    public function getCityReplacement()
+    {
+        return $this->cityReplacement;
+    }
 
     /**
      * @return ReplacementDictionary
@@ -53,6 +67,17 @@ class Replacement extends AbstractEntity
     public function getPhrase()
     {
         return $this->phrase;
+    }
+
+    /**
+     * @param string $cityReplacement
+     * @return $this
+     */
+    public function setCityReplacement($cityReplacement)
+    {
+        $this->cityReplacement = $cityReplacement;
+
+        return $this;
     }
 
     /**

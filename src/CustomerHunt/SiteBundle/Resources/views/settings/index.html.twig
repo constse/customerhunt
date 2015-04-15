@@ -1,0 +1,112 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}Настройки проекта{% endblock %}
+
+{% block head_additions %}
+    <style>
+        .td-actions { width: 60px; }
+        .actions { display: none; }
+    </style>
+{% endblock %}
+
+{% block navigation %}
+    {% set project = view.project %}
+    <li>
+        <a href="{{ url('site_projects') }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; Проекты
+        </a>
+    </li>
+    <li>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}">
+            <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp;
+            {% if project.caption|length > 27 %}{{ project.caption|e[:27] }}...{% else %}{{ project.caption|e }}{% endif %}
+        </a>
+    </li>
+    <li class="active">
+        <a><span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Настройки проекта</a>
+    </li>
+{% endblock %}
+
+{% block content %}
+    {% set project = view.project %}
+    <div class="page">
+        <div class="page-header">
+            <h1>
+                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Настройки проекта
+            </h1>
+        </div>
+        <h2>Города</h2>
+        <table class="table table-striped forms">
+            <thead>
+            <tr>
+                <th>Город</th>
+                <th>Широта</th>
+                <th>Долгота</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for city in view.cities %}
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-globe" aria-hidden="true"></span> {{ city.caption|e }}
+                    </td>
+                    <td>{{ city.latitude|e }}</td>
+                    <td>{{ city.longitude|e }}</td>
+                    <td class="td-actions">
+                        <div class="actions">
+                            <a href="{{ url('site_settings_city_edit', {'project': project.id, 'city': city.id}) }}" class="edit">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </a>
+                            <a href="#" class="remove">
+                                <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4" class="info text-center">Вы не добавили ни одного города</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ url('site_settings_city_add', {'project': project.id}) }}" class="btn btn-success">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Добавить город
+        </a>
+        <hr>
+        <a href="{{ url('site_projects_project', {'project': project.id}) }}" class="btn btn-default">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
+        </a>
+    </div>
+{% endblock %}
+
+{% block body_additions %}
+    <script>
+        $(document).ready(function() {
+            $('table tr').hover(function() {
+                $(this).find('.actions').fadeIn(250);
+            }, function() {
+                $(this).find('.actions').fadeOut(250);
+            });
+            $('.actions a.edit').popover({
+                container: 'body',
+                content: 'Изменить',
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+            $('.cities .actions a.remove').click(function(e) {
+                if (!confirm('Удалить город?')) {
+                    e.preventDefault();
+                    return false;
+                }
+            });
+            $('.actions a.remove').popover({
+                container: 'body',
+                content: 'Удалить',
+                placement: 'bottom',
+                trigger: 'hover'
+            });
+        });
+    </script>
+{% endblock %}

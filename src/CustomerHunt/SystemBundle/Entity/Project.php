@@ -20,6 +20,12 @@ class Project extends AbstractEntity
     protected $caption;
 
     /**
+     * @var ArrayCollection|City[]
+     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\City", mappedBy = "project", cascade = {"persist", "remove"})
+     */
+    protected $cities;
+
+    /**
      * @var string
      * @ORM\Column(name = "description", type = "text", nullable = true)
      */
@@ -48,6 +54,7 @@ class Project extends AbstractEntity
     {
         parent::__construct();
 
+        $this->cities = new ArrayCollection();
         $this->pages = new ArrayCollection();
         $this->testPages = new ArrayCollection();
     }
@@ -58,6 +65,14 @@ class Project extends AbstractEntity
     public function getCaption()
     {
         return $this->caption;
+    }
+
+    /**
+     * @return ArrayCollection|City[]
+     */
+    public function getCities()
+    {
+        return $this->cities;
     }
 
     /**

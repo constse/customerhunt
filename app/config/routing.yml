@@ -13,6 +13,11 @@ replacement_dictionaries:
   prefix: /
   type: annotation
 
+settings:
+  resource: "@CustomerHuntSiteBundle/Controller/SettingsController.php"
+  prefix: /
+  type: annotation
+
 pages:
   resource: "@CustomerHuntSiteBundle/Controller/PagesController.php"
   prefix: /

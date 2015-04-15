@@ -52,29 +52,38 @@
         {% set form = forms.replacements %}
         {{ form_start(form, {'attr': {'class': 'form'}}) }}
             {% set prototype = form.replacements.vars.prototype %}
-            {% set prototype_source = '<div class="row"><div class="col-xs-6 col-sm-6 col-dm-6">' ~
+            {% set prototype_source = '<div class="row"><div class="col-xs-4 col-sm-4 col-dm-4">' ~
                 form_label(prototype.phrase, null, {'label_attr': {'class': 'control-label'}}) ~
                 (prototype.phrase.vars.required ? '<span class="text-danger">*</span>' : '') ~
                 form_widget(prototype.phrase, {'attr': {'class': 'form-control'}}) ~
-                '</div><div class="col-xs-6 col-sm-6 col-md-6">' ~
+                '</div><div class="col-xs-4 col-sm-4 col-md-4">' ~
                 form_label(prototype.replacement, null, {'label_attr': {'class': 'control-label'}}) ~
                 (prototype.replacement.vars.required ? '<span class="text-danger">*</span>' : '') ~
                 form_widget(prototype.replacement, {'attr': {'class': 'form-control'}}) ~
+                '</div><div class="col-xs-4 col-sm-4 col-md-4">' ~
+                form_label(prototype.cityReplacement, null, {'label_attr': {'class': 'control-label'}}) ~
+                (prototype.cityReplacement.vars.required ? '<span class="text-danger">*</span>' : '') ~
+                form_widget(prototype.cityReplacement, {'attr': {'class': 'form-control'}}) ~
                 '</div></div>'
             %}
             <div id="replacements" data-prototype="{{ prototype_source|e }}">
                 {% for replacement in form.replacements %}
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-4 col-sm-4 col-md-4">
                                 {{ form_label(replacement.phrase, null, {'label_attr': {'class': 'control-label'}}) }}
                                 {% if replacement.phrase.vars.required %}<span class="text-danger">*</span>{% endif %}
                                 {{ form_widget(replacement.phrase, {'attr': {'class': 'form-control'}}) }}
                             </div>
-                            <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="col-xs-4 col-sm-4 col-md-4">
                                 {{ form_label(replacement.replacement, null, {'label_attr': {'class': 'control-label'}}) }}
                                 {% if replacement.replacement.vars.required %}<span class="text-danger">*</span>{% endif %}
                                 {{ form_widget(replacement.replacement, {'attr': {'class': 'form-control'}}) }}
+                            </div>
+                            <div class="col-xs-4 col-sm-4 col-md-4">
+                                {{ form_label(replacement.cityReplacement, null, {'label_attr': {'class': 'control-label'}}) }}
+                                {% if replacement.cityReplacement.vars.required %}<span class="text-danger">*</span>{% endif %}
+                                {{ form_widget(replacement.cityReplacement, {'attr': {'class': 'form-control'}}) }}
                             </div>
                         </div>
                     </div>

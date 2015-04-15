@@ -15,6 +15,7 @@ class ReplacementFormType extends AbstractEntityFormType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('phrase', 'textarea', array('label' => 'Фраза'))
-            ->add('replacement', 'textarea', array('label' => 'Замена'));
+            ->add('replacement', 'textarea', array('label' => 'Замена'))
+            ->add('cityReplacement', 'textarea', array('label' => 'Замена с городом', 'required' => false));
     }
 } 
