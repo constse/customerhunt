@@ -22,23 +22,6 @@ function hunter_replacement_parse_url() {
     return (query != null && query != '') ? hunter_replacement_to_assoc_array(query) : {};
 }
 
-function hunter_replacement_ymaps_init() {
-    var geolocation = ymaps.geolocation;
-    var latitude = geolocation.latitude * Math.PI / 180.0, longitude = geolocation.longitude * Math.PI / 180.0;
-    var cities_count = hunter_replacement_cities.length;
-    var min = 1000000000, minIndex = 0;
-
-    for (var i = 0; i < cities_count; ++i) {
-        city_latitude = hunter_replacement_cities[i].latitude * Math.PI / 180.0;
-        city_longitude = hunter_replacement_cities[i].longitude * Math.PI / 180.0;
-        var l = Math.acos(Math.sin(city_latitude)*Math.sin(latitude)+Math.cos(latitude)*Math.cos(city_longitude-longitude));
-
-        if (l < min) { min = l; minIndex = i; }
-    }
-
-    hunter_replacement_city = hunter_replacement_cities[minIndex];
-}
-
 function hunter_replacement_init() {
     var city = hunter_replacement_city;
 
@@ -73,13 +56,28 @@ function hunter_replacement_init() {
     }
 }
 
-var ymaps = null;
+function hunter_replacement_ymaps_init() {
+    var geolocation = ymaps.geolocation;
+    var latitude = geolocation.latitude * Math.PI / 180.0, longitude = geolocation.longitude * Math.PI / 180.0;
+    var cities_count = hunter_replacement_cities.length;
+    var min = 1000000000, minIndex = 0;
+
+    for (var i = 0; i < cities_count; ++i) {
+        city_latitude = hunter_replacement_cities[i].latitude * Math.PI / 180.0;
+        city_longitude = hunter_replacement_cities[i].longitude * Math.PI / 180.0;
+        var l = Math.acos(Math.sin(city_latitude)*Math.sin(latitude)+Math.cos(latitude)*Math.cos(city_longitude-longitude));
+
+        if (l < min) { min = l; minIndex = i; }
+    }
+
+    hunter_replacement_city = hunter_replacement_cities[minIndex];
+    hunter_replacement_init();
+}
 
 $(document).ready(function() {
-    $('head').append('<script src="http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU"></script>');
-    setTimeout(function() {
-        ymaps.ready(hunter_replacement_ymaps_init);
-        hunter_replacement_init();
-    }, 1000);
+    var ymaps_script = $('<script></script>');
+    ymaps_script.attr('src', 'http://api-maps.yandex.ru/2.0-stable/?load=package.full&lang=ru-RU');
+    $('head').append(ymaps_script);
+    ymaps_script.load(function() { ymaps.ready(hunter_replacement_ymaps_init); });
 });
 {#</script>#}
