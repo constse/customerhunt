@@ -82,6 +82,15 @@
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}
+                <span class="help-block">
+                    Замена с городом:<br>
+                    <code>%city%</code> &mdash; название города в именительном падеже<br>
+                    <code>%city_gen%</code> &mdash; название города в родительном падеже<br>
+                    <code>%city_dat%</code> &mdash; название города в дательном падеже<br>
+                    <code>%city_acc%</code> &mdash; название города в винительном падеже<br>
+                    <code>%city_abl%</code> &mdash; название города в творительном падеже<br>
+                    <code>%city_pre%</code> &mdash; название города в предложном падеже
+                </span>
             </div>
             {% set errors = form.parameter.vars.errors %}
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}

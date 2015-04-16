@@ -81,17 +81,24 @@
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
             <div class="{{ class }}">
                 {{ form_label(form.replacement, null, {'label_attr': {'class': 'control-label'}}) }}
-                {% if form.replacement.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.replacement, {'attr': {'class': 'form-control'}}) }}
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}
+                <span class="help-block">
+                    Замена с городом:<br>
+                    <code>%city%</code> &mdash; название города в именительном падеже<br>
+                    <code>%city_gen%</code> &mdash; название города в родительном падеже<br>
+                    <code>%city_dat%</code> &mdash; название города в дательном падеже<br>
+                    <code>%city_acc%</code> &mdash; название города в винительном падеже<br>
+                    <code>%city_abl%</code> &mdash; название города в творительном падеже<br>
+                    <code>%city_pre%</code> &mdash; название города в предложном падеже
+                </span>
             </div>
             {% set errors = form.parameter.vars.errors %}
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
             <div class="{{ class }}">
                 {{ form_label(form.parameter, null, {'label_attr': {'class': 'control-label'}}) }}
-                {% if form.parameter.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.parameter, {'attr': {'class': 'form-control'}}) }}
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
