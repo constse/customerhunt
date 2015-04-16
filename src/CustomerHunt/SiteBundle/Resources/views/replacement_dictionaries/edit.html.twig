@@ -123,7 +123,7 @@
         $(document).ready(function() {
             $('#{{ form.withParameter.vars.id }}').change(function() {
                 var replacement = $('#{{ form.replacement.vars.id }}');
-                var parameter = $('#{{ form.parameter.vars.id }}').parents('.form-group');
+                var parameter = $('#{{ form.parameter.vars.id }}');
 
                 if ($(this).is(':checked')) {
                     replacement.prop('required', false).html('').parents('.form-group').stop(true, true).slideUp(250).find('textarea');

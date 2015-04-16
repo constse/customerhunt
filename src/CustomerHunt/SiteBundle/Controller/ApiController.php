@@ -213,7 +213,7 @@ class ApiController extends InitializableController
 
         $response = new Response($this->renderView('CustomerHuntSiteBundle:api:replacement.js.twig', array(
             'cities' => json_encode($cities),
-            'main_replacements' => json_encode($parameters),
+            'main_replacements' => json_encode($mainReplacements),
             'parameters' => json_encode($parameters),
             'replacements' => json_encode($replacements)
         )));
