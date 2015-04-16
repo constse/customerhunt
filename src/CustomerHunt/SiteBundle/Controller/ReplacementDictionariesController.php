@@ -24,8 +24,8 @@ class ReplacementDictionariesController extends InitializableController
      *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
-     * @Config\ParamConverter("dictionary", options = {"mapping": {"dictionary": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
+     * @Config\ParamConverter("dictionary", options = {"mapping": {"dictionary": "id", "page": "page"}})
      */
     public function replacementsAction(Project $project, Page $page, ReplacementDictionary $dictionary)
     {
@@ -67,8 +67,8 @@ class ReplacementDictionariesController extends InitializableController
      *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
-     * @Config\ParamConverter("dictionary", options = {"mapping": {"dictionary": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
+     * @Config\ParamConverter("dictionary", options = {"mapping": {"dictionary": "id", "page": "page"}})
      */
     public function editAction(Project $project, Page $page, ReplacementDictionary $dictionary)
     {
@@ -86,10 +86,15 @@ class ReplacementDictionariesController extends InitializableController
                 array('notice' => 'dictionary_changed', 'caption' => $dictionary->getCaption())
             );
 
-            return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
+            if ($dictionary->isWithParameter())
+                return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
+                    'project' => $project->getId(),
+                    'page' => $page->getId(),
+                    'dictionary' => $dictionary->getId()
+                ));
+            else return $this->redirectToRoute('site_pages_page', array(
                 'project' => $project->getId(),
-                'page' => $page->getId(),
-                'dictionary' => $dictionary->getId()
+                'page' => $page->getId()
             ));
         }
 
@@ -109,7 +114,7 @@ class ReplacementDictionariesController extends InitializableController
      * @return RedirectResponse|Response
      * @Config\Route("/projects/{project}/pages/{page}/replacement-dictionaries/add", name = "site_replacement_dictionaries_add", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function addAction(Project $project, Page $page)
     {
@@ -129,10 +134,15 @@ class ReplacementDictionariesController extends InitializableController
                 array('notice' => 'dictionary_added', 'caption' => $dictionary->getCaption())
             );
 
-            return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
+            if ($dictionary->isWithParameter())
+                return $this->redirectToRoute('site_replacement_dictionaries_replacements', array(
+                    'project' => $project->getId(),
+                    'page' => $page->getId(),
+                    'dictionary' => $dictionary->getId()
+                ));
+            else return $this->redirectToRoute('site_pages_page', array(
                 'project' => $project->getId(),
-                'page' => $page->getId(),
-                'dictionary' => $dictionary->getId()
+                'page' => $page->getId()
             ));
         }
 

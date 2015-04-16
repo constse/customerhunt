@@ -19,7 +19,7 @@ class TestPagesController extends InitializableController
      * @return RedirectResponse|Response
      * @Config\Route("/{project}/test/{page}/edit", name = "site_test_pages_edit", requirements = {"project": "\d+", "page": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function editAction(Project $project, TestPage $page)
     {
@@ -82,7 +82,7 @@ class TestPagesController extends InitializableController
      * @return RedirectResponse
      * @Config\Route("/{project}/test/{page}/remove", name = "site_test_pages_remove", requirements = {"project": "\d+", "page": "\d+"})
      * @Config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function removeAction(Project $project, TestPage $page)
     {

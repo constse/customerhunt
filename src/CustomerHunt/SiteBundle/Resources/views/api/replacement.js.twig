@@ -1,6 +1,7 @@
 {#<script>#}
 var hunter_replacement_city = null;
 var hunter_replacement_cities = {{ cities|raw }};
+var hunter_replacement_main_replacements = {{ main_replacements|raw }};
 var hunter_replacement_parameters = {{ parameters|raw }};
 var hunter_replacement_replacements = {{ replacements|raw }};
 
@@ -24,6 +25,24 @@ function hunter_replacement_parse_url() {
 
 function hunter_replacement_init() {
     var city = hunter_replacement_city;
+
+    var replacements_count = hunter_replacement_main_replacements.length;
+
+    for (var i = 0; i < replacements_count; ++i) {
+        var selector = hunter_replacement_main_replacements[i]['selector'];
+        var replacement = hunter_replacement_main_replacements[i]['replacement'];
+
+        if (city) {
+            replacement = replacement.replace('%city%', city.caption);
+            replacement = replacement.replace('%city_gen%', city.genitive);
+            replacement = replacement.replace('%city_dat%', city.dative);
+            replacement = replacement.replace('%city_acc%', city.accusative);
+            replacement = replacement.replace('%city_abl%', city.ablative);
+            replacement = replacement.replace('%city_pre%', city.prepositional);
+        }
+
+        $(selector).html(replacement);
+    }
 
     var parameters = hunter_replacement_parse_url();
     var parameters_count = hunter_replacement_parameters.length;
@@ -49,6 +68,7 @@ function hunter_replacement_init() {
                         city_replacement = city_replacement.replace('%city_pre%', city.prepositional);
                         replacement = city_replacement;
                     }
+
                     $(selector).html(replacement);
                 }
             }

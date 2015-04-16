@@ -26,7 +26,7 @@ class ApiController extends InitializableController
      *   requirements = {"code": "[0-9a-f]+", "project": "\d+", "page": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function handleFormRequestAction($code, Project $project, Page $page)
     {
@@ -119,7 +119,7 @@ class ApiController extends InitializableController
      *   requirements = {"code": "[0-9a-f]+", "project": "\d+", "page": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function formHandlerAction($code, Project $project, Page $page)
     {
@@ -163,7 +163,7 @@ class ApiController extends InitializableController
      *   requirements = {"code": "[0-9a-f]+", "project": "\d+", "page": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function replacementAction($code, Project $project, Page $page)
     {
@@ -184,26 +184,36 @@ class ApiController extends InitializableController
                 'prepositional' => $city->getPrepositional()
             );
 
+        $mainReplacements = array();
         $parameters = array();
         $replacements = array();
 
         /** @var ReplacementDictionary $dictionary */
         foreach ($page->getReplacementDictionaries() as $dictionary) {
-            $parameter = $dictionary->getParameter();
-            $parameters[] = $parameter;
-            $selector = array('selector' => $dictionary->getSelector());
+            if ($dictionary->isWithParameter()) {
+                $parameter = $dictionary->getParameter();
+                $parameters[] = $parameter;
+                $selector = array('selector' => $dictionary->getSelector());
 
-            /** @var Replacement $replacement */
-            foreach ($dictionary->getReplacements() as $replacement) {
-                $selector['replacements'][$replacement->getPhrase()]['default'] = $replacement->getReplacement();
-                $selector['replacements'][$replacement->getPhrase()]['city'] = $replacement->getCityReplacement();
+                /** @var Replacement $replacement */
+                foreach ($dictionary->getReplacements() as $replacement) {
+                    $selector['replacements'][$replacement->getPhrase()]['default'] = $replacement->getReplacement();
+                    $selector['replacements'][$replacement->getPhrase()]['city'] = $replacement->getCityReplacement();
+                }
+
+                $replacements[$parameter][] = $selector;
             }
-
-            $replacements[$parameter][] = $selector;
+            else {
+                $mainReplacements[] = array(
+                    'selector' => $dictionary->getSelector(),
+                    'replacement' => $dictionary->getReplacement()
+                );
+            }
         }
 
         $response = new Response($this->renderView('CustomerHuntSiteBundle:api:replacement.js.twig', array(
             'cities' => json_encode($cities),
+            'main_replacements' => json_encode($parameters),
             'parameters' => json_encode($parameters),
             'replacements' => json_encode($replacements)
         )));

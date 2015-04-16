@@ -21,7 +21,11 @@ class Project extends AbstractEntity
 
     /**
      * @var ArrayCollection|City[]
-     * @ORM\OneToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\City", mappedBy = "project", cascade = {"persist", "remove"})
+     * @ORM\ManyToMany(targetEntity = "CustomerHunt\SystemBundle\Entity\City", cascade = {"persist", "remove"})
+     * @ORM\JoinTable(name = "project_cities",
+     *   joinColumns = {@ORM\JoinColumn(name = "projectid", referencedColumnName = "id")},
+     *   inverseJoinColumns = {@ORM\JoinColumn(name = "cityid", referencedColumnName = "id")}
+     * )
      */
     protected $cities;
 

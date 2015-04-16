@@ -18,7 +18,7 @@ class PagesController extends InitializableController
      * @return RedirectResponse|Response
      * @Config\Route("/projects/{project}/pages/{page}/edit", name = "site_pages_edit", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function editAction(Project $project, Page $page)
     {
@@ -70,7 +70,7 @@ class PagesController extends InitializableController
      * @return RedirectResponse
      * @Config\Route("/projects/{project}/pages/{page}/remove", name = "site_pages_remove", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function removeAction(Project $project, Page $page)
     {
@@ -145,7 +145,7 @@ class PagesController extends InitializableController
      * @return Response
      * @Config\Route("/projects/{project}/pages/{page}", name = "site_pages_page", requirements = {"project": "\d+", "page": "\d+"})
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function pageAction(Project $project, Page $page)
     {

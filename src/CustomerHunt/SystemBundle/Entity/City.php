@@ -61,13 +61,6 @@ class City extends AbstractEntity
     protected $prepositional;
 
     /**
-     * @var Project
-     * @ORM\ManyToOne(targetEntity = "CustomerHunt\SystemBundle\Entity\Project", inversedBy = "cities")
-     * @ORM\JoinColumn(name = "projectid", referencedColumnName = "id")
-     */
-    protected $project;
-
-    /**
      * @return string
      */
     public function getAblative()
@@ -129,14 +122,6 @@ class City extends AbstractEntity
     public function getPrepositional()
     {
         return $this->prepositional;
-    }
-
-    /**
-     * @return Project
-     */
-    public function getProject()
-    {
-        return $this->project;
     }
 
     /**
@@ -223,17 +208,6 @@ class City extends AbstractEntity
     public function setPrepositional($prepositional)
     {
         $this->prepositional = $prepositional;
-
-        return $this;
-    }
-
-    /**
-     * @param Project $project
-     * @return $this
-     */
-    public function setProject(Project $project)
-    {
-        $this->project = $project;
 
         return $this;
     }

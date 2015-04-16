@@ -62,22 +62,37 @@
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}
             </div>
-            {% set errors = form.parameter.vars.errors %}
-            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
-            <div class="{{ class }}">
-                {{ form_label(form.parameter, null, {'label_attr': {'class': 'control-label'}}) }}
-                {% if form.parameter.vars.required %}<span class="text-danger">*</span>{% endif %}
-                {{ form_widget(form.parameter, {'attr': {'class': 'form-control'}}) }}
-                {% if errors|length > 0 %}
-                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
-                {% endif %}
-            </div>
             {% set errors = form.selector.vars.errors %}
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
             <div class="{{ class }}">
                 {{ form_label(form.selector, null, {'label_attr': {'class': 'control-label'}}) }}
                 {% if form.selector.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.selector, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            <div class="checkbox">
+                <label>
+                    {{ form_widget(form.withParameter) }} {{ form.withParameter.vars.label }}
+                </label>
+            </div>
+            {% set errors = form.replacement.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.replacement, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.replacement.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.replacement, {'attr': {'class': 'form-control'}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
+            </div>
+            {% set errors = form.parameter.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.parameter, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.parameter.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.parameter, {'attr': {'class': 'form-control'}}) }}
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}
@@ -93,4 +108,25 @@
             </button>
         {{ form_end(form) }}
     </div>
+{% endblock %}
+
+{% block body_additions %}
+    {% set form = forms.dictionary %}
+    <script>
+        $(document).ready(function() {
+            $('#{{ form.withParameter.vars.id }}').change(function() {
+                var replacement = $('#{{ form.replacement.vars.id }}');
+                var parameter = $('#{{ form.parameter.vars.id }}').parents('.form-group');
+
+                if ($(this).is(':checked')) {
+                    replacement.prop('required', false).html('').parents('.form-group').stop(true, true).slideUp(250).find('textarea');
+                    parameter.prop('required', true).parents('.form-group').stop(true, true).slideDown(250);
+                }
+                else {
+                    replacement.prop('required', true).parents('.form-group').stop(true, true).slideDown(250);
+                    parameter.prop('required', false).val('').parents('.form-group').stop(true, true).slideUp(250).find('input');
+                }
+            }).change();
+        });
+    </script>
 {% endblock %}

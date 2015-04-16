@@ -1,0 +1,73 @@
+{% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
+
+{% block title %}Customer Hunt{% endblock %}
+
+{% block head_additions %}
+    <style>
+        .main-menu .icon { float: left; font-size: 48px; height: 60px; margin: 0 10px 10px 0; width: 60px; }
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class="page">
+        <div class="page-header">
+            <h1>Customer Hunt</h1>
+        </div>
+        <div class="container">
+            <div class="row main-menu">
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="panel panel-success">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Проекты</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-success icon">
+                                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                            </div>
+                            Ваши проекты<br>
+                            <a href="{{ url('site_projects') }}">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Настройки</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-info icon">
+                                <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+                            </div>
+                            Настройки системы<br>
+                            <a href="{{ url('site_settings') }}">Перейти</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="panel panel-warning">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Пользователи</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-warning icon">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                            </div>
+                            Управление пользователями<br>
+                            {#<a href="{{ url('site_users') }}">Перейти</a>#}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-3">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Место зарезервировано</h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="icon"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

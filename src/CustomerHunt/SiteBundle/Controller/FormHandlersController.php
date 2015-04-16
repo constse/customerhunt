@@ -23,8 +23,8 @@ class FormHandlersController extends InitializableController
      *   requirements = {"project": "\d+", "page": "\d+", "formHandler": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
-     * @Config\ParamConverter("formHandler", options = {"mapping": {"formHandler": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
+     * @Config\ParamConverter("formHandler", options = {"mapping": {"formHandler": "id", "page": "page"}})
      */
     public function editAction(Project $project, Page $page, FormHandler $formHandler)
     {
@@ -90,7 +90,7 @@ class FormHandlersController extends InitializableController
      *   requirements = {"project": "\d+", "page": "\d+", "dictionary": "\d+"}
      * )
      * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
-     * @Config\ParamConverter("page", options = {"mapping": {"page": "id"}})
+     * @Config\ParamConverter("page", options = {"mapping": {"page": "id", "project": "project"}})
      */
     public function addAction(Project $project, Page $page)
     {

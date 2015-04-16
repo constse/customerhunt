@@ -5,7 +5,6 @@ namespace CustomerHunt\SiteBundle\Controller;
 use CustomerHunt\SiteBundle\Form\Type\CityFormType;
 use CustomerHunt\SystemBundle\Controller\InitializableController;
 use CustomerHunt\SystemBundle\Entity\City;
-use CustomerHunt\SystemBundle\Entity\Project;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration as Config;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,90 +12,106 @@ use Symfony\Component\HttpFoundation\Response;
 class SettingsController extends InitializableController
 {
     /**
-     * @param Project $project
      * @param City $city
      * @return RedirectResponse|Response
-     * @Config\Route("/projects/{project}/settings/cities/{city}/edit", name = "site_settings_city_edit",
-     *   requirements = {"project": "\d+", "city": "\d+"}
-     * )
-     * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
+     * @Config\Route("/settings/cities/{city}/edit", name = "site_settings_city_edit", requirements = {"city": "\d+"})
      * @config\ParamConverter("city", options = {"mapping": {"city": "id"}})
      */
-    public function cityEditAction(Project $project, City $city)
+    public function cityEditAction(City $city)
     {
-        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
-
         $form = $this->createForm(new CityFormType(), $city);
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $sames = $this->getRepository('City')->createQueryBuilder('c')
+                ->select('COUNT(c.id) AS id')
+                ->where('c.caption = :caption')
+                ->andWhere('c.id <> :id')
+                ->setParameters(array('caption' => $city->getCaption(), $city->getId()))
+                ->getQuery()->getSingleScalarResult();
+
             $this->manager->persist($city);
             $this->manager->flush();
 
-            // TODO: notices
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:settings.html.twig',
+                array('notice' => 'city_changed', 'caption' => $city->getCaption())
+            );
 
-            return $this->redirectToRoute('site_settings', array('project' => $project->getId()));
+            if ($sames > 0)
+                $this->addNotice('warning',
+                    'CustomerHuntSiteBundle:notices:settings.html.twig',
+                    array(
+                        'notice' => 'caption_already_exist',
+                        'caption' => $city->getCaption(),
+                        'city' => $city->getId()
+                    )
+                );
+
+            return $this->redirectToRoute('site_settings');
         }
 
         $this->forms['city'] = $form->createView();
-        $this->view = array(
-            'project' => $project,
-            'city' => $city
-        );
+        $this->view['city'] = $city;
 
         return $this->render('CustomerHuntSiteBundle:settings:edit_city.html.twig');
     }
 
     /**
-     * @param Project $project
      * @return RedirectResponse|Response
-     * @Config\Route("/projects/{project}/settings/cities/add", name = "site_settings_city_add", requirements = {"project": "\d+"})
-     * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
+     * @Config\Route("/settings/cities/add", name = "site_settings_city_add", requirements = {"project": "\d+"})
      */
-    public function cityAddAction(Project $project)
+    public function cityAddAction()
     {
-        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
-
         $city = new City();
-        $city->setProject($project);
         $form = $this->createForm(new CityFormType(), $city);
         $form->handleRequest($this->request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $sames = $this->getRepository('City')->createQueryBuilder('c')
+                ->select('COUNT(c.id) AS id')
+                ->where('c.caption = :caption')
+                ->setParameters(array('caption' => $city->getCaption()))
+                ->getQuery()->getSingleScalarResult();
+
             $this->manager->persist($city);
             $this->manager->flush();
 
-            // TODO: notices
+            $this->addNotice('success',
+                'CustomerHuntSiteBundle:notices:settings.html.twig',
+                array('notice' => 'city_added', 'caption' => $city->getCaption())
+            );
 
-            return $this->redirectToRoute('site_settings', array('project' => $project->getId()));
+            if ($sames > 0)
+                $this->addNotice('warning',
+                    'CustomerHuntSiteBundle:notices:settings.html.twig',
+                    array(
+                        'notice' => 'caption_already_exist',
+                        'caption' => $city->getCaption(),
+                        'city' => $city->getId()
+                    )
+                );
+
+            return $this->redirectToRoute('site_settings');
         }
 
         $this->forms['city'] = $form->createView();
-        $this->view['project'] = $project;
 
         return $this->render('CustomerHuntSiteBundle:settings:add_city.html.twig');
     }
 
     /**
-     * @param Project $project
      * @return Response
-     * @Config\Route("/projects/{project}/settings", name = "site_settings", requirements = {"project": "\d+"})
-     * @config\ParamConverter("project", options = {"mapping": {"project": "id"}})
+     * @Config\Route("/settings", name = "site_settings")
      */
-    public function indexAction(Project $project)
+    public function indexAction()
     {
-        if ($project->getOwner() !== $this->user) throw $this->createNotFoundException();
-
         $cities = $this->getRepository('City')->createQueryBuilder('c')
-            ->where('c.project = :project')
-            ->setParameters(array('project' => $project))
+            ->orderBy('c.caption', 'ASC')
             ->getQuery()->getResult();
 
-        $this->view = array(
-            'project' => $project,
-            'cities' => $cities
-        );
+        $this->view['cities'] = $cities;
 
         return $this->render('CustomerHuntSiteBundle:settings:index.html.twig');
     }
-} 
+}

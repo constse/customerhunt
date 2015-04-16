@@ -1,0 +1,20 @@
+{% if notice == 'city_added' %}
+    <h4>Город добавлен</h4>
+    <p>Новый город &laquo;{{ caption|e }}&raquo; был успешно добавлен.</p>
+{% endif %}
+{% if notice == 'city_changed' %}
+    <h4>Город изменен</h4>
+    <p>Изменения города &laquo;{{ caption|e }}&raquo; были успешно сохранены.</p>
+{% endif %}
+{% if notice == 'caption_already_exist' %}
+    <h4>Город уже существует</h4>
+    <p>
+        Город с названием &laquo;{{ caption|e }}&raquo; уже существует.
+        Вы можете изменить название текущего города или проигнорировать данное сообщение.
+    </p>
+    <p><a href="{{ url('site_settings_city_edit', {'city': city}) }}" class="btn btn-warning">Изменить название</a></p>
+{% endif %}
+{% if notice == 'city_removed' %}
+    <h4>Город удален</h4>
+    <p>Город &laquo;{{ caption|e }}&raquo; был успешно удален.</p>
+{% endif %}

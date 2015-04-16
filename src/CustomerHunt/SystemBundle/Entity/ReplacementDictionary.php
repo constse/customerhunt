@@ -34,9 +34,15 @@ class ReplacementDictionary extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name = "dicparameter", type = "string")
+     * @ORM\Column(name = "dicparameter", type = "string", nullable = true)
      */
     protected $parameter;
+
+    /**
+     * @var string
+     * @ORM\Column(name = "replacement", type = "text", nullable = true)
+     */
+    protected $replacement;
 
     /**
      * @var ArrayCollection|Replacement[]
@@ -50,11 +56,18 @@ class ReplacementDictionary extends AbstractEntity
      */
     protected $selector;
 
+    /**
+     * @var bool
+     * @ORM\Column(name = "withparameter", type = "boolean")
+     */
+    protected $withParameter;
+
     public function __construct()
     {
         parent::__construct();
 
         $this->replacements = new ArrayCollection();
+        $this->withParameter = true;
     }
 
     /**
@@ -90,6 +103,14 @@ class ReplacementDictionary extends AbstractEntity
     }
 
     /**
+     * @return string
+     */
+    public function getReplacement()
+    {
+        return $this->replacement;
+    }
+
+    /**
      * @return ArrayCollection|Replacement[]
      */
     public function getReplacements()
@@ -103,6 +124,14 @@ class ReplacementDictionary extends AbstractEntity
     public function getSelector()
     {
         return $this->selector;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWithParameter()
+    {
+        return $this->withParameter;
     }
 
     /**
@@ -150,12 +179,34 @@ class ReplacementDictionary extends AbstractEntity
     }
 
     /**
+     * @param string $replacement
+     * @return $this
+     */
+    public function setReplacement($replacement)
+    {
+        $this->replacement = $replacement;
+
+        return $this;
+    }
+
+    /**
      * @param string $selector
      * @return $this
      */
     public function setSelector($selector)
     {
         $this->selector = $selector;
+
+        return $this;
+    }
+
+    /**
+     * @param bool $withParameter
+     * @return $this
+     */
+    public function setWithParameter($withParameter)
+    {
+        $this->withParameter = $withParameter;
 
         return $this;
     }
