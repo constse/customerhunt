@@ -68,7 +68,9 @@ class ApiController extends InitializableController
             foreach ($handler->getFields() as $field)
                 $body = preg_replace('/%' . $field->getName() . '%/', $values[$field->getName()], $body);
 
-            $body = preg_replace('/%hunter_query%/', $this->request->query->get('hunter_query', 'unknown'), $body);
+            $query = $this->request->query->get('hunter_query', 'unknown');
+            $query = rawurldecode(rawurldecode($query));
+            $body = preg_replace('/%hunter_query%/', $query, $body);
 
             $emails = $handler->getEmailRecipients();
             $emails = preg_replace('/(,| |;)+/', ',', $emails);
