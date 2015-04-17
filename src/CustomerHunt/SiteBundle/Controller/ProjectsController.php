@@ -151,6 +151,8 @@ class ProjectsController extends InitializableController
     {
         $projects = $this->getRepository('Project')->createQueryBuilder('p')
             ->leftJoin('p.pages', 'pa')
+            ->where('p.owner = :owner')
+            ->setParameters(array('owner' => $this->user))
             ->orderBy('p.createdAt', 'DESC')
             ->getQuery()->getResult();
 
