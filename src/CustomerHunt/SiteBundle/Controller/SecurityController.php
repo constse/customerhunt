@@ -98,10 +98,11 @@ class SecurityController extends InitializableController
     }
 
     /**
+     * @param string $target
      * @return RedirectResponse
-     * @Config\Route("/refresh-code", name = "site_security_refresh_code")
+     * @Config\Route("/refresh-code/{target}", name = "site_security_refresh_code", defaults = {"target": null})
      */
-    public function refreshCodeAction()
+    public function refreshCodeAction($target)
     {
         $this->user->setCode(User::generateCode());
         $this->manager->persist($this->user);
@@ -112,6 +113,11 @@ class SecurityController extends InitializableController
             array('notice' => 'code_refreshed')
         );
 
-        return $this->redirectToRoute('site_security_profile');
+        if (is_null($target)) return $this->redirectToRoute('site_security_profile');
+        else {
+            $target = urldecode($target);
+
+            return $this->redirect($target);
+        }
     }
 }

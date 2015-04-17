@@ -2,6 +2,12 @@
 
 {% block title %}Новый пользователь{% endblock %}
 
+{% block head_additions %}
+    <style>
+        .roles { border: 1px solid #eee; border-radius: 4px; padding: 0 5px; }
+    </style>
+{% endblock %}
+
 {% block navigation %}
     <li>
         <a href="{{ url('site_users') }}">
@@ -45,6 +51,18 @@
                 {{ form_label(form.password.second, null, {'label_attr': {'class': 'control-label'}}) }}
                 {% if form.password.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(form.roles) }}
+                <div class="roles">
+                    {% for field in form.roles.children %}
+                        <div class="checkbox">
+                            <label>
+                                {{ form_widget(field) }} {{ field.vars.label }}
+                            </label>
+                        </div>
+                    {% endfor %}
+                </div>
             </div>
             <hr>
             <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>

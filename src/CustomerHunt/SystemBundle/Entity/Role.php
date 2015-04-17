@@ -19,6 +19,12 @@ class Role extends AbstractEntity implements RoleInterface
 
     /**
      * @var string
+     * @ORM\Column(name = "caption", type = "string")
+     */
+    protected $caption;
+
+    /**
+     * @var string
      * @ORM\Column(name = "role", type = "string", unique = true)
      */
     protected $role;
@@ -39,6 +45,14 @@ class Role extends AbstractEntity implements RoleInterface
     /**
      * @return string
      */
+    public function getCaption()
+    {
+        return $this->caption;
+    }
+
+    /**
+     * @return string
+     */
     public function getRole()
     {
         return $this->role;
@@ -50,6 +64,17 @@ class Role extends AbstractEntity implements RoleInterface
     public function getUsers()
     {
         return $this->users;
+    }
+
+    /**
+     * @param string $caption
+     * @return $this
+     */
+    public function setCaption($caption)
+    {
+        $this->caption = $caption;
+
+        return $this;
     }
 
     /**

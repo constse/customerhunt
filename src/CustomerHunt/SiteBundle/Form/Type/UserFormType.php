@@ -20,6 +20,11 @@ class UserFormType extends AbstractEntityFormType
                 'invalid_message' => 'Пароли не совпадают',
                 'first_options' => array('label' => 'Пароль'),
                 'second_options' => array('label' => 'Повтор пароля')
+            ))->add('roles', 'entity', array('label' => 'Роли', 'required' => true,
+                'class' => 'CustomerHunt\SystemBundle\Entity\Role',
+                'property' => 'caption',
+                'multiple' => true,
+                'expanded' => true
             ));
     }
 } 

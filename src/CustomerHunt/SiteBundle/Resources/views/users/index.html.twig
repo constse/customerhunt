@@ -39,8 +39,8 @@
                     <td>
                         {% set roles = [] %}
                         {% for role in user.roles %}
-                            {% if role.role == 'ROLE_ADMIN' %}{% set roles = roles|merge(['Администратор']) %}
-                            {% elseif role.role == 'ROLE_USER' %}{% set roles = roles|merge(['Пользователь']) %}
+                            {% if role.role == 'ROLE_ADMIN' %}{% set roles = roles|merge([role.caption|e]) %}
+                            {% elseif role.role == 'ROLE_USER' %}{% set roles = roles|merge([role.caption|e]) %}
                             {% endif %}
                         {% endfor %}
                         {{ roles|join(', ') }}

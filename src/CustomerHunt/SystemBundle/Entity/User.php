@@ -182,6 +182,15 @@ class User extends AbstractEntity implements UserInterface, \Serializable
         return $this;
     }
 
+    public function setRoles($roles)
+    {
+        $this->roles->clear();
+
+        foreach ($roles as $role) $this->roles->add($role);
+
+        return $this;
+    }
+
     /**
      * @param string $salt
      * @return $this
