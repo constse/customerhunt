@@ -14,13 +14,13 @@ class City extends AbstractEntity
 {
     /**
      * @var string
-     * @ORM\Column(name = "ablative", type = "string")
+     * @ORM\Column(name = "ablative", type = "string", nullable = true)
      */
     protected $ablative;
 
     /**
      * @var string
-     * @ORM\Column(name = "accusative", type = "string")
+     * @ORM\Column(name = "accusative", type = "string", nullable = true)
      */
     protected $accusative;
 
@@ -32,13 +32,13 @@ class City extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name = "dative", type = "string")
+     * @ORM\Column(name = "dative", type = "string", nullable = true)
      */
     protected $dative;
 
     /**
      * @var string
-     * @ORM\Column(name = "genitive", type = "string")
+     * @ORM\Column(name = "genitive", type = "string", nullable = true)
      */
     protected $genitive;
 
@@ -56,7 +56,7 @@ class City extends AbstractEntity
 
     /**
      * @var string
-     * @ORM\Column(name = "prepositional", type = "string")
+     * @ORM\Column(name = "prepositional", type = "string", nullable = true)
      */
     protected $prepositional;
 
