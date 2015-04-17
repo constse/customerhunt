@@ -95,6 +95,7 @@ function hunter_replacement_ymaps_init() {
 }
 
 $(document).ready(function() {
-    ymaps.ready(hunter_replacement_ymaps_init);
+    if (ymaps) ymaps.ready(hunter_replacement_ymaps_init);
+    else hunter_replacement_init();
 });
 {#</script>#}
