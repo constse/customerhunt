@@ -79,13 +79,15 @@ function hunter_replacement_init() {
 function hunter_replacement_ymaps_init() {
     var geolocation = ymaps.geolocation;
     var latitude = geolocation.latitude * Math.PI / 180.0, longitude = geolocation.longitude * Math.PI / 180.0;
+    console.log('coords: ' + latitude + ', ' + longitude);
     var cities_count = hunter_replacement_cities.length;
     var min = 1000000000, minIndex = 0;
 
     for (var i = 0; i < cities_count; ++i) {
         city_latitude = hunter_replacement_cities[i].latitude * Math.PI / 180.0;
         city_longitude = hunter_replacement_cities[i].longitude * Math.PI / 180.0;
-        var l = Math.acos(Math.sin(city_latitude)*Math.sin(latitude)+Math.cos(latitude)*Math.cos(city_longitude-longitude));
+        var l = Math.acos(Math.sin(city_latitude)*Math.sin(latitude)+Math.cos(latitude)*Math.cos(city_latitude)*Math.cos(city_longitude-longitude));
+        console.log('city: ' + hunter_replacement_cities[i].caption + ', l: ' + l);
 
         if (l < min) { min = l; minIndex = i; }
     }
