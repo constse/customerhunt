@@ -18,6 +18,11 @@ settings:
   prefix: /
   type: annotation
 
+users:
+  resource: "@CustomerHuntSiteBundle/Controller/UsersController.php"
+  prefix: /
+  type: annotation
+
 pages:
   resource: "@CustomerHuntSiteBundle/Controller/PagesController.php"
   prefix: /

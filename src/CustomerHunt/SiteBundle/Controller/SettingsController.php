@@ -27,7 +27,7 @@ class SettingsController extends InitializableController
                 ->select('COUNT(c.id) AS id')
                 ->where('c.caption = :caption')
                 ->andWhere('c.id <> :id')
-                ->setParameters(array('caption' => $city->getCaption(), $city->getId()))
+                ->setParameters(array('caption' => $city->getCaption(), 'id' => $city->getId()))
                 ->getQuery()->getSingleScalarResult();
 
             $this->manager->persist($city);

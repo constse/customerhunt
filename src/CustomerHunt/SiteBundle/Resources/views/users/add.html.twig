@@ -1,22 +1,41 @@
 {% extends 'CustomerHuntSiteBundle::layout.html.twig' %}
 
-{% block title %}Личный профиль{% endblock %}
+{% block title %}Новый пользователь{% endblock %}
+
+{% block navigation %}
+    <li>
+        <a href="{{ url('site_users') }}">
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Пользователи
+        </a>
+    </li>
+    <li class="active">
+        <a>
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span> Новый пользователь
+        </a>
+    </li>
+{% endblock %}
 
 {% block content %}
     <div class="page">
-        <div class="page-header"><h1>Личный профиль</h1></div>
-        {% set form = forms.profile %}
+        <div class="page-header"><h1>Новый пользователь</h1></div>
+        {% set form = forms.user %}
         {{ form_start(form, {'attr': {'class': 'form'}}) }}
-            <div class="form-group">
-                <label class="control-label">Имя пользователя</label>
-                <input type="text" value="{{ app.user.username|e }}" class="form-control" disabled="disabled">
+            {% set errors = form.username.vars.errors %}
+            {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
+            <div class="{{ class }}">
+                {{ form_label(form.username, null, {'label_attr': {'class': 'control-label'}}) }}
+                {% if form.username.vars.required %}<span class="text-danger">*</span>{% endif %}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                {% if errors|length > 0 %}
+                    {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
+                {% endif %}
             </div>
             {% set errors = form.password.vars.errors %}
             {% set class = 'form-group' ~ (errors|length > 0 ? ' has-error' : '') %}
             <div class="{{ class }}">
                 {{ form_label(form.password.first, null, {'label_attr': {'class': 'control-label'}}) }}
                 {% if form.password.vars.required %}<span class="text-danger">*</span>{% endif %}
-                {{ form_widget(form.password.first, {'attr': {'class': 'form-control', 'autofocus': true}}) }}
+                {{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
                 {% if errors|length > 0 %}
                     {% for error in errors %}<span class="help-block text-danger">{{ error.message }}</span>{% endfor %}
                 {% endif %}
@@ -27,19 +46,10 @@
                 {% if form.password.vars.required %}<span class="text-danger">*</span>{% endif %}
                 {{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
             </div>
-            <div class="form-group">
-                <label class="control-label">Код авторизации</label>
-                <input type="text" value="{{ app.user.code|e }}" class="form-control" disabled="disabled">
-                <span class="help-block">
-                    <a href="{{ url('site_security_refresh_code') }}" class="refresh-code">
-                        <span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> Обновить код авторизации
-                    </a>
-                </span>
-            </div>
             <hr>
             <em>Знаком <span class="text-danger">*</span> отмечены поля, обязательные для заполнения</em>
             <hr>
-            <a href="{{ url('site_general_index') }}" class="btn btn-default">
+            <a href="{{ url('site_users') }}" class="btn btn-default">
                 <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Назад
             </a>
             <button type="submit" class="btn btn-success">
@@ -47,17 +57,4 @@
             </button>
         {{ form_end(form) }}
     </div>
-{% endblock %}
-
-{% block body_additions %}
-    <script>
-        $(document).ready(function() {
-            $('.refresh-code').click(function(e) {
-                if (!confirm('Обновление кода авторизации приведет к изменению кодов встраивания для всех страниц Ваших проектов. Вы уверены, что хотите продолжить?')) {
-                    e.preventDefault();
-                    return false;
-                }
-            });
-        });
-    </script>
 {% endblock %}
